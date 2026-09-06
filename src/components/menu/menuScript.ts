@@ -7,25 +7,15 @@ export type ConstellationMenuSection = {
   anchor: "left" | "right";
 };
 
-export type ConstellationLink = [number, number];
-
-export const NAV_LINKS: ConstellationLink[] = [
-  [0, 2],
-  [2, 4],
-  [1, 3],
-  [1, 2],
-  [3, 4],
-];
-
 export const NAV_SECTIONS: ConstellationMenuSection[] = [
-  { id: "projects", label: "01 PROJECTS", href: "/projects", x: 0.88, y: 0.26, anchor: "left" },
-  { id: "experience", label: "02 EXPERIENCE", href: "/experience", x: 0.12, y: 0.5, anchor: "right" },
-  { id: "metrics", label: "03 METRICS", href: "/metrics", x: 0.88, y: 0.5, anchor: "left" },
-  { id: "platform", label: "04 PLATFORM", href: "/platform", x: 0.12, y: 0.74, anchor: "right" },
-  { id: "contact", label: "05 CONTACT", href: "/contact", x: 0.88, y: 0.74, anchor: "left" },
+  { id: "projects", label: "01 PROJECTS", href: "/projects", x: 0.5, y: 0.41, anchor: "right" },
+  { id: "experience", label: "02 EXPERIENCE", href: "/experience", x: 0.44, y: 0.5, anchor: "left" },
+  { id: "platform", label: "03 PLATFORM", href: "/platform", x: 0.56, y: 0.5, anchor: "right" },
+  { id: "metrics", label: "04 METRICS", href: "/metrics", x: 0.5, y: 0.59, anchor: "right" },
+  { id: "contact", label: "05 CONTACT", href: "/contact", x: 0.5, y: 0.5, anchor: "right" },
 ];
 
-const RUNTIME = `(function (DATA, LINKS) {
+const RUNTIME = `(function (DATA) {
   if (!nodes || !DATA || !DATA.length) return;
   var canvas = document.getElementById('constellationCanvas');
   if (!canvas) return;
@@ -83,29 +73,24 @@ const RUNTIME = `(function (DATA, LINKS) {
     window.parent.postMessage({ type: 'constellation-nav', href: DATA[i].href }, '*');
   });
   function drawLinks() {
-    if (!LINKS || !LINKS.length) return;
     var c = modeColor();
     ctx.lineCap = 'butt';
     ctx.lineJoin = 'miter';
     ctx.strokeStyle = c;
     ctx.lineWidth = 1;
-    var dists = [];
-    var maxD = 0;
-    for (var k = 0; k < LINKS.length; k++) {
-      var a = hubs[LINKS[k][0]], b = hubs[LINKS[k][1]];
-      var dx = a.x - b.x, dy = a.y - b.y;
-      var d = Math.sqrt(dx * dx + dy * dy);
-      dists[k] = d;
-      if (d > maxD) maxD = d;
-    }
-    var ref = maxD > 0 ? maxD : 1;
-    for (var l = 0; l < LINKS.length; l++) {
-      var p = hubs[LINKS[l][0]], q = hubs[LINKS[l][1]];
-      ctx.globalAlpha = 0.18 + (1 - dists[l] / ref) * 0.5;
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
-      ctx.lineTo(q.x, q.y);
-      ctx.stroke();
+    for (var i = 0; i < hubs.length; i++) {
+      for (var j = i + 1; j < hubs.length; j++) {
+        var a = hubs[i], b = hubs[j];
+        var dx = a.x - b.x, dy = a.y - b.y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < LINK) {
+          ctx.globalAlpha = 0.22 + (1 - d / LINK) * 0.55;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
     }
     ctx.globalAlpha = 1;
   }
@@ -130,15 +115,17 @@ const RUNTIME = `(function (DATA, LINKS) {
         ctx.arc(0, 0, 22, 0, Math.PI * 2);
         ctx.stroke();
       }
-      ctx.font = '11px ' + mono;
+      ctx.font = '10px ' + mono;
       ctx.textBaseline = 'middle';
+      ctx.globalAlpha = 0.62;
       if (s.anchor === 'left') {
         ctx.textAlign = 'right';
-        ctx.fillText(s.label, -16, 0);
+        ctx.fillText(s.label, -14, 0);
       } else {
         ctx.textAlign = 'left';
-        ctx.fillText(s.label, 16, 0);
+        ctx.fillText(s.label, 14, 0);
       }
+      ctx.globalAlpha = 1;
       ctx.restore();
     }
     ctx.globalAlpha = 1;
@@ -214,12 +201,8 @@ const RUNTIME = `(function (DATA, LINKS) {
   }
 })`;
 
-export function buildMenuScript(
-  sections: ConstellationMenuSection[],
-  links: ConstellationLink[] = [],
-): string {
+export function buildMenuScript(sections: ConstellationMenuSection[]): string {
   if (!sections.length) return "";
   const json = JSON.stringify(sections).replace(/</g, "\\u003c");
-  const linksJson = JSON.stringify(links);
-  return `<script data-threeui-menu>${RUNTIME}(${json}, ${linksJson});</script>`;
+  return `<script data-threeui-menu>${RUNTIME}(${json});</script>`;
 }
