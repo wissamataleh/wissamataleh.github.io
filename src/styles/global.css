@@ -13,3 +13,50 @@ body {
   color: #eef1f6;
   font-family: "SF Mono", "Cascadia Mono", Menlo, Monaco, Consolas, monospace;
 }
+
+.site-constellation {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.site-content {
+  position: relative;
+  z-index: 5;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.site-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 20px;
+  border-bottom: 1px solid currentColor;
+  background: rgba(7, 9, 20, 0.55);
+}
+
+.site-bar .site-index {
+  margin-left: auto;
+}
+
+.site-toggle {
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: 700 11px ui-monospace, monospace;
+  letter-spacing: 0.14em;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.probe {
+  display: none;
+}

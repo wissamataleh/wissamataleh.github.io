@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
+import ConstellationMenu from "../components/ConstellationMenu";
 
 interface Props {
   title?: string;
@@ -20,6 +21,9 @@ const { title = "Senior DevOps/SRE Engineer" } = Astro.props;
     <ClientRouter />
   </head>
   <body>
-    <slot />
+    <ConstellationMenu client:load transition:persist />
+    <main class="site-content" data-page>
+      <slot />
+    </main>
   </body>
 </html>

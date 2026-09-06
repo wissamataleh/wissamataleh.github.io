@@ -1,0 +1,142 @@
+import { useEffect, useMemo, useRef, useState } from "react";
+import { navigate } from "astro:transitions/client";
+import { ConstellationField } from "../effects/constellation-field/ConstellationField";
+import { buildMenuScript, NAV_SECTIONS } from "./menu/menuScript";
+import "../effects/constellation-field/styles.css";
+
+type Mode = "dark" | "light";
+type Phase = "idle" | "out" | "in";
+
+const MODE_TRANSITION_MS = 380;
+
+const MODE_STORE: { value: Mode } = { value: "dark" };
+
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function matchHref(pathname: string, href: string) {
+  if (href === "/") return pathname === "/" || pathname === "";
+  return pathname.startsWith(href);
+}
+
+export default function ConstellationMenu() {
+  const [mode, setModeState] = useState<Mode>(MODE_STORE.value);
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [activeHref, setActiveHref] = useState("/");
+  const pendingMode = useRef<Mode | null>(null);
+  const timers = useRef<number[]>([]);
+  const menuScript = useMemo(() => buildMenuScript(NAV_SECTIONS), []);
+
+  const setMode = (next: Mode) => {
+    MODE_STORE.value = next;
+    setModeState(next);
+    if (typeof document !== "undefined") {
+      document.documentElement.dataset.siteMode = next;
+    }
+  };
+
+  useEffect(() => {
+    const current = timers.current;
+    return () => current.forEach((id) => window.clearTimeout(id));
+  }, []);
+
+  const switchMode = (next: Mode) => {
+    if (next === mode || next === pendingMode.current) return;
+    if (prefersReducedMotion()) {
+      setMode(next);
+      return;
+    }
+    pendingMode.current = next;
+    setPhase("out");
+    timers.current.push(
+      window.setTimeout(() => {
+        setMode(next);
+        setPhase("in");
+        timers.current.push(
+          window.setTimeout(() => {
+            setPhase("idle");
+            pendingMode.current = null;
+          }, MODE_TRANSITION_MS + 40),
+        );
+      }, MODE_TRANSITION_MS),
+    );
+  };
+
+  useEffect(() => {
+    setMode(MODE_STORE.value);
+  }, []);
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      const data = event.data as { type?: string; href?: unknown } | null;
+      if (!data || data.type !== "constellation-nav" || typeof data.href !== "string") return;
+      if (data.href === window.location.pathname) return;
+      void navigate(data.href);
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
+  useEffect(() => {
+    const update = () => setActiveHref(window.location.pathname);
+    update();
+    window.addEventListener("popstate", update);
+    document.addEventListener("astro:page-load" as never, update);
+    return () => {
+      window.removeEventListener("popstate", update);
+      document.removeEventListener("astro:page-load" as never, update);
+    };
+  }, []);
+
+  const activeIndex =
+    NAV_SECTIONS.findIndex((s) => matchHref(activeHref, s.href)) + 1;
+
+  const transitioning = phase !== "idle";
+
+  return (
+    <div
+      className={`effect-frame site-constellation ${transitioning ? "is-transitioning" : ""}`}
+      data-mode={mode}
+    >
+      <div className="effect-scene">
+        <ConstellationField
+          mode={mode}
+          speed={0.5}
+          size={0.5}
+          strokeWidth={0.5}
+          length={0.9}
+          density={1.4}
+          opacity={1}
+          hue={0}
+          saturation={1.1}
+          brightness={1}
+          suffixScript={menuScript}
+        />
+      </div>
+      <header className="site-bar">
+        <span className="site-name" aria-hidden="true">
+          SR0.OPERATOR
+        </span>
+        <span className="site-coords" aria-hidden="true">
+          47.3769N 08.5417E
+        </span>
+        <span className="site-index" aria-hidden="true">
+          {String(activeIndex).padStart(2, "0")}/06
+        </span>
+        <button
+          type="button"
+          className="site-toggle"
+          onClick={() => switchMode(mode === "dark" ? "light" : "dark")}
+          disabled={transitioning}
+          aria-pressed={mode === "light"}
+        >
+          {mode === "dark" ? "LIGHT" : "DARK"}
+        </button>
+      </header>
+    </div>
+  );
+}
