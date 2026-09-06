@@ -14,6 +14,7 @@ body {
   font-family: "SF Mono", "Cascadia Mono", Menlo, Monaco, Consolas, monospace;
 }
 
+#constellation-menu-root,
 .site-constellation {
   position: fixed;
   inset: 0;
@@ -26,6 +27,11 @@ body {
   box-sizing: border-box;
   height: 100vh;
   overflow: hidden;
+  pointer-events: none;
+}
+
+.site-content > * {
+  pointer-events: auto;
 }
 
 .site-bar {
@@ -170,7 +176,7 @@ body {
 .bio-panel {
   margin: 96px 24px 24px;
   padding: 32px;
-  max-width: 820px;
+  max-width: 540px;
 }
 
 .content-panel {
@@ -199,7 +205,7 @@ body {
 
 .content-panel {
   margin: 88px 24px 24px 24px;
-  max-width: 860px;
+  max-width: 540px;
   padding: 28px;
   overflow-y: auto;
   max-height: calc(100vh - 150px);
