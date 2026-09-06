@@ -49,8 +49,8 @@ const RUNTIME = `(function (DATA) {
       ay: DATA[_i].y * height,
       x: DATA[_i].x * width,
       y: DATA[_i].y * height,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3
+      vx: (Math.random() - 0.5) * 1.0,
+      vy: (Math.random() - 0.5) * 1.0
     });
   }
   function hit(x, y) {
@@ -190,10 +190,18 @@ const RUNTIME = `(function (DATA) {
   function tick() {
     for (var i = 0; i < hubs.length; i++) {
       var h = hubs[i];
+      h.vx += (Math.random() - 0.5) * 0.04;
+      h.vy += (Math.random() - 0.5) * 0.04;
+      var spd = Math.sqrt(h.vx * h.vx + h.vy * h.vy);
+      var vmax = 1.6;
+      if (spd > vmax) {
+        h.vx = (h.vx / spd) * vmax;
+        h.vy = (h.vy / spd) * vmax;
+      }
       h.x += h.vx;
       h.y += h.vy;
-      h.x += (h.ax - h.x) * 0.003;
-      h.y += (h.ay - h.y) * 0.003;
+      h.x += (h.ax - h.x) * 0.0012;
+      h.y += (h.ay - h.y) * 0.0012;
       if (h.x < 8 || h.x > width - 8) h.vx *= -1;
       if (h.y < 8 || h.y > height - 8) h.vy *= -1;
     }
