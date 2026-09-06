@@ -74,13 +74,18 @@ const RUNTIME = `(function (DATA) {
     return -1;
   }
   var hover = -1;
+  function setCursor() {
+    canvas.style.cursor = hover < 0 ? 'default' : 'pointer';
+  }
   canvas.addEventListener('mousemove', function (e) {
     hover = hit(e.clientX, e.clientY);
     window.__CF_HOVER = hover < 0 ? null : hover;
+    setCursor();
   });
   canvas.addEventListener('mouseleave', function () {
     hover = -1;
     window.__CF_HOVER = null;
+    setCursor();
   });
   canvas.addEventListener('click', function (e) {
     var i = hit(e.clientX, e.clientY);
