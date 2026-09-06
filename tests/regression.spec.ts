@@ -10,10 +10,13 @@ test("constellation keeps running across navigation (iframe not recreated)", asy
 
   await frame!.evaluate(() => {
     const c = document.querySelector("canvas") as HTMLCanvasElement;
+    const refs = (window as any).__CF_HUB_HREFS as string[];
+    const pos = (window as any).__CF_HUB_POS as [number, number][];
+    const i = refs.indexOf("/contact");
     c.dispatchEvent(
       new MouseEvent("click", {
-        clientX: Math.min(window.innerWidth * 0.88, window.innerWidth),
-        clientY: window.innerHeight * 0.74,
+        clientX: pos[i][0],
+        clientY: pos[i][1],
         bubbles: true,
       }),
     );
@@ -35,10 +38,13 @@ test("mode persists across hub navigation", async ({ page }) => {
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   await frame!.evaluate(() => {
     const c = document.querySelector("canvas") as HTMLCanvasElement;
+    const refs = (window as any).__CF_HUB_HREFS as string[];
+    const pos = (window as any).__CF_HUB_POS as [number, number][];
+    const i = refs.indexOf("/platform");
     c.dispatchEvent(
       new MouseEvent("click", {
-        clientX: window.innerWidth * 0.12,
-        clientY: window.innerHeight * 0.74,
+        clientX: pos[i][0],
+        clientY: pos[i][1],
         bubbles: true,
       }),
     );
@@ -53,7 +59,7 @@ test("reduced motion freezes the field but menu still renders", async ({ page })
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   expect(frame).toBeTruthy();
   const hubCount = await frame!.evaluate(() => (window as any).__CF_HUB_COUNT ?? -1);
-  expect(hubCount).toBe(6);
+  expect(hubCount).toBe(5);
   await page.waitForTimeout(400);
   const a = await frame!.evaluate(() =>
     (document.querySelector("canvas") as HTMLCanvasElement).toDataURL(),

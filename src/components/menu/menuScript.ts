@@ -8,12 +8,11 @@ export type ConstellationMenuSection = {
 };
 
 export const NAV_SECTIONS: ConstellationMenuSection[] = [
-  { id: "home", label: "01 HOME", href: "/", x: 0.12, y: 0.26, anchor: "right" },
+  { id: "projects", label: "01 PROJECTS", href: "/projects", x: 0.88, y: 0.26, anchor: "left" },
   { id: "experience", label: "02 EXPERIENCE", href: "/experience", x: 0.12, y: 0.5, anchor: "right" },
-  { id: "platform", label: "03 PLATFORM", href: "/platform", x: 0.12, y: 0.74, anchor: "right" },
-  { id: "projects", label: "04 PROJECTS", href: "/projects", x: 0.88, y: 0.26, anchor: "left" },
-  { id: "metrics", label: "05 METRICS", href: "/metrics", x: 0.88, y: 0.5, anchor: "left" },
-  { id: "contact", label: "06 CONTACT", href: "/contact", x: 0.88, y: 0.74, anchor: "left" },
+  { id: "metrics", label: "03 METRICS", href: "/metrics", x: 0.88, y: 0.5, anchor: "left" },
+  { id: "platform", label: "04 PLATFORM", href: "/platform", x: 0.12, y: 0.74, anchor: "right" },
+  { id: "contact", label: "05 CONTACT", href: "/contact", x: 0.88, y: 0.74, anchor: "left" },
 ];
 
 const RUNTIME = `(function (DATA) {
@@ -32,6 +31,7 @@ const RUNTIME = `(function (DATA) {
   enableHits();
   var ctx = canvas.getContext('2d');
   window.__CF_HUB_COUNT = DATA.length;
+  window.__CF_HUB_HREFS = [];
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var palette = { dark: '#50A0F0', light: '#B8860B' };
   var mono = '"SF Mono", "Cascadia Mono", Menlo, Monaco, Consolas, monospace';
@@ -39,19 +39,21 @@ const RUNTIME = `(function (DATA) {
     var mode = (window.__SF_CONTROLS && window.__SF_CONTROLS.mode) || 'dark';
     return palette[mode] || palette.dark;
   }
-  function hubPos(i) {
-    return [DATA[i].x * width, DATA[i].y * height];
-  }
-  function pin() {
-    for (var i = 0; i < DATA.length && i < nodes.length; i++) {
-      nodes[i].vx = 0;
-      nodes[i].vy = 0;
-    }
+  var hubs = [];
+  for (var _i = 0; _i < DATA.length; _i++) {
+    window.__CF_HUB_HREFS[_i] = DATA[_i].href;
+    hubs.push({
+      ax: DATA[_i].x * width,
+      ay: DATA[_i].y * height,
+      x: DATA[_i].x * width,
+      y: DATA[_i].y * height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3
+    });
   }
   function hit(x, y) {
-    for (var i = 0; i < DATA.length; i++) {
-      var p = hubPos(i);
-      var dx = p[0] - x, dy = p[1] - y;
+    for (var i = 0; i < hubs.length; i++) {
+      var dx = hubs[i].x - x, dy = hubs[i].y - y;
       if (dx * dx + dy * dy < 32 * 32) return i;
     }
     return -1;
@@ -72,10 +74,9 @@ const RUNTIME = `(function (DATA) {
   });
   function drawHubs() {
     var c = modeColor();
-    for (var i = 0; i < DATA.length; i++) {
+    for (var i = 0; i < hubs.length; i++) {
       var s = DATA[i];
-      var p = hubPos(i);
-      var x = p[0], y = p[1];
+      var x = hubs[i].x, y = hubs[i].y;
       var on = i === hover;
       ctx.save();
       ctx.translate(x, y);
@@ -140,23 +141,36 @@ const RUNTIME = `(function (DATA) {
     ctx.globalAlpha = 1;
     drawHubs();
   }
+  function publishPos() {
+    var out = [];
+    for (var i = 0; i < hubs.length; i++) out.push([hubs[i].x, hubs[i].y]);
+    window.__CF_HUB_POS = out;
+  }
   function tick() {
-    for (var i = 0; i < DATA.length && i < nodes.length; i++) {
-      var p = hubPos(i);
-      nodes[i].x = p[0];
-      nodes[i].y = p[1];
+    for (var i = 0; i < hubs.length; i++) {
+      var h = hubs[i];
+      h.x += h.vx;
+      h.y += h.vy;
+      h.x += (h.ax - h.x) * 0.003;
+      h.y += (h.ay - h.y) * 0.003;
+      if (h.x < 8 || h.x > width - 8) h.vx *= -1;
+      if (h.y < 8 || h.y > height - 8) h.vy *= -1;
     }
     drawHubs();
+    publishPos();
     requestAnimationFrame(tick);
   }
-  function rePin() {
-    pin();
+  function reAnchor() {
+    for (var i = 0; i < hubs.length; i++) {
+      hubs[i].ax = DATA[i].x * width;
+      hubs[i].ay = DATA[i].y * height;
+    }
     if (reduced) netDraw();
   }
-  window.addEventListener('resize', rePin);
-  pin();
+  window.addEventListener('resize', reAnchor);
   if (reduced) {
     netDraw();
+    publishPos();
   } else {
     requestAnimationFrame(tick);
   }

@@ -21,10 +21,13 @@ test("hub navigation lands on real content, not 404", async ({ page }) => {
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   await frame!.evaluate(() => {
     const c = document.querySelector("canvas") as HTMLCanvasElement;
+    const refs = (window as any).__CF_HUB_HREFS as string[];
+    const pos = (window as any).__CF_HUB_POS as [number, number][];
+    const i = refs.indexOf("/projects");
     c.dispatchEvent(
       new MouseEvent("click", {
-        clientX: Math.min(window.innerWidth * 0.88, window.innerWidth),
-        clientY: window.innerHeight * 0.26,
+        clientX: pos[i][0],
+        clientY: pos[i][1],
         bubbles: true,
       }),
     );

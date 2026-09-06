@@ -122,9 +122,9 @@ export default function ConstellationMenu() {
         />
       </div>
       <header className="site-bar">
-        <span className="site-name" aria-hidden="true">
+        <a href="/" className="site-name" aria-label="home">
           SR0.OPERATOR
-        </span>
+        </a>
         <span className="site-coords" aria-hidden="true">
           47.3769N 08.5417E
         </span>
@@ -140,7 +140,7 @@ export default function ConstellationMenu() {
           ))}
         </nav>
         <span className="site-index" aria-hidden="true">
-          {String(activeIndex).padStart(2, "0")}/06
+          {String(activeIndex).padStart(2, "0")}/{String(NAV_SECTIONS.length).padStart(2, "0")}
         </span>
         <button
           type="button"

@@ -104,6 +104,19 @@ body {
   margin-left: auto;
 }
 
+.site-name {
+  color: var(--fg);
+  text-decoration: none;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.site-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .site-nav a {
   color: var(--muted);
   text-decoration: none;
