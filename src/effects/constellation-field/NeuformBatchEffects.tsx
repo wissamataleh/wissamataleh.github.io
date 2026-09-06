@@ -63,6 +63,7 @@ export type NeuformBatchEffectProps = {
   hue?: number;
   saturation?: number;
   brightness?: number;
+  suffixScript?: string;
   className?: string;
   style?: CSSProperties;
 };
@@ -690,6 +691,7 @@ function buildFocusedDocument(
   knobs: BakeKnobs & {
     speed: number;
     opacity: number;
+    suffixScript?: string;
   },
 ) {
   const mode = knobs.mode;
@@ -806,7 +808,7 @@ ${definition.focusCss ?? ""}
 </script>`;
   return patchedSource
     .replace(/<head([^>]*)>/i, `<head$1>${controlScript}${focusStyle}`)
-    .replace(/<\/body>/i, `${focusScript}</body>`);
+    .replace(/<\/body>/i, `${focusScript}${knobs.suffixScript ?? ""}</body>`);
 }
 
 function NeuformBatchEffect({
@@ -823,6 +825,7 @@ function NeuformBatchEffect({
   hue = NEUFORM_BATCH_DEFAULTS.hue,
   saturation = NEUFORM_BATCH_DEFAULTS.saturation,
   brightness = NEUFORM_BATCH_DEFAULTS.brightness,
+  suffixScript,
   className,
   style,
 }: NeuformBatchEffectProps & { definition: EffectDefinition }) {
@@ -858,8 +861,9 @@ function NeuformBatchEffect({
         density: safeDensity,
         strokeWidth: safeStrokeWidth,
         opacity: NEUFORM_BATCH_DEFAULTS.opacity,
+        suffixScript,
       }),
-    [definition, resolvedMode, safeDensity, safeGap, safeLength, safeSize, safeStrokeWidth, variant],
+    [definition, resolvedMode, safeDensity, safeGap, safeLength, safeSize, safeStrokeWidth, suffixScript, variant],
   );
 
   useEffect(() => {

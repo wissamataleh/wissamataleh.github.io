@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../effects/constellation-field/styles.css";
 import { ConstellationField } from "../effects/constellation-field/ConstellationField";
+
+const MARKER = `<script data-test-suffix>window.__SUFFIX_OK = 7;<\/script>`;
 ---
 <BaseLayout title="Senior DevOps/SRE Engineer">
   <main class="probe">
@@ -17,6 +19,7 @@ import { ConstellationField } from "../effects/constellation-field/Constellation
       hue={0}
       saturation={1.1}
       brightness={1}
+      suffixScript={MARKER}
       style={{ position: "fixed", inset: 0 }}
     />
   </main>
