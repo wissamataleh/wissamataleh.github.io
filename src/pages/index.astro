@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../effects/constellation-field/styles.css";
+import { ConstellationField } from "../effects/constellation-field/ConstellationField";
+---
+<BaseLayout title="Senior DevOps/SRE Engineer">
+  <main class="probe">
+    <ConstellationField
+      client:load
+      mode="dark"
+      speed={0.5}
+      size={0.5}
+      strokeWidth={0.5}
+      length={0.9}
+      density={1.4}
+      opacity={1}
+      hue={0}
+      saturation={1.1}
+      brightness={1}
+      style={{ position: "fixed", inset: 0 }}
+    />
+  </main>
+</BaseLayout>

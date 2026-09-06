@@ -1,6 +1,6 @@
 html,
 body,
-#root {
+#app {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -10,4 +10,6 @@ body,
 body {
   overflow: hidden;
   background: #070914;
+  color: #eef1f6;
+  font-family: "SF Mono", "Cascadia Mono", Menlo, Monaco, Consolas, monospace;
 }
