@@ -8,11 +8,11 @@ export type ConstellationMenuSection = {
 };
 
 export const NAV_SECTIONS: ConstellationMenuSection[] = [
-  { id: "projects", label: "01 PROJECTS", href: "/projects", x: 0.5, y: 0.41, anchor: "right" },
-  { id: "experience", label: "02 EXPERIENCE", href: "/experience", x: 0.44, y: 0.5, anchor: "left" },
-  { id: "platform", label: "03 PLATFORM", href: "/platform", x: 0.56, y: 0.5, anchor: "right" },
-  { id: "metrics", label: "04 METRICS", href: "/metrics", x: 0.5, y: 0.59, anchor: "right" },
-  { id: "contact", label: "05 CONTACT", href: "/contact", x: 0.5, y: 0.5, anchor: "right" },
+  { id: "projects", label: "01 PROJECTS", href: "/projects", x: 0.48, y: 0.36, anchor: "right" },
+  { id: "experience", label: "02 EXPERIENCE", href: "/experience", x: 0.55, y: 0.43, anchor: "left" },
+  { id: "platform", label: "03 PLATFORM", href: "/platform", x: 0.45, y: 0.5, anchor: "right" },
+  { id: "metrics", label: "04 METRICS", href: "/metrics", x: 0.55, y: 0.57, anchor: "left" },
+  { id: "contact", label: "05 CONTACT", href: "/contact", x: 0.47, y: 0.64, anchor: "right" },
 ];
 
 const RUNTIME = `(function (DATA) {
@@ -32,6 +32,8 @@ const RUNTIME = `(function (DATA) {
   var ctx = canvas.getContext('2d');
   window.__CF_HUB_COUNT = DATA.length;
   window.__CF_HUB_HREFS = [];
+  var MENU_LINK = 200;
+  var DOT = 3.5;
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var palette = { dark: '#50A0F0', light: '#B8860B' };
   var mono = '"SF Mono", "Cascadia Mono", Menlo, Monaco, Consolas, monospace';
@@ -83,8 +85,8 @@ const RUNTIME = `(function (DATA) {
         var a = hubs[i], b = hubs[j];
         var dx = a.x - b.x, dy = a.y - b.y;
         var d = Math.sqrt(dx * dx + dy * dy);
-        if (d < LINK) {
-          ctx.globalAlpha = 0.22 + (1 - d / LINK) * 0.55;
+        if (d < MENU_LINK) {
+          ctx.globalAlpha = 0.22 + (1 - d / MENU_LINK) * 0.55;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
@@ -103,27 +105,41 @@ const RUNTIME = `(function (DATA) {
       var on = i === hover;
       ctx.save();
       ctx.translate(x, y);
-      ctx.fillStyle = c;
-      ctx.globalAlpha = on ? 1 : 0.92;
-      ctx.fillRect(-4, -4, 8, 8);
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = c;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(-4.5, -4.5, 9, 9);
       if (on) {
+        var glow = ctx.createRadialGradient(0, 0, DOT, 0, 0, 30);
+        glow.addColorStop(0, c);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = glow;
+        ctx.globalAlpha = 0.45;
         ctx.beginPath();
-        ctx.arc(0, 0, 22, 0, Math.PI * 2);
+        ctx.arc(0, 0, 30, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = c;
+      ctx.globalAlpha = on ? 0.5 : 0.28;
+      ctx.beginPath();
+      ctx.arc(0, 0, DOT * 2.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = on ? 1 : 0.85;
+      ctx.beginPath();
+      ctx.arc(0, 0, DOT, 0, Math.PI * 2);
+      ctx.fill();
+      if (on) {
+        ctx.strokeStyle = c;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(0, 0, 20, 0, Math.PI * 2);
         ctx.stroke();
       }
-      ctx.font = '10px ' + mono;
+      ctx.font = '13px ' + mono;
       ctx.textBaseline = 'middle';
-      ctx.globalAlpha = 0.62;
+      ctx.globalAlpha = 0.8;
       if (s.anchor === 'left') {
         ctx.textAlign = 'right';
-        ctx.fillText(s.label, -14, 0);
+        ctx.fillText(s.label, -16, 0);
       } else {
         ctx.textAlign = 'left';
-        ctx.fillText(s.label, 14, 0);
+        ctx.fillText(s.label, 16, 0);
       }
       ctx.globalAlpha = 1;
       ctx.restore();
