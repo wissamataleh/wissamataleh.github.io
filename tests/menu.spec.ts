@@ -46,3 +46,29 @@ test("dark/light toggle flips the field and persists across navigation", async (
   await page.waitForURL("**/contact", { timeout: 10_000 });
   await expect(page.locator("html")).toHaveAttribute("data-site-mode", "light");
 });
+
+test("hub clicks work on a retina canvas (devicePixelRatio 2)", async ({ browser }) => {
+  const context = await browser.newContext({ deviceScaleFactor: 2 });
+  const page = await context.newPage();
+  await page.goto("/");
+  const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  expect(frame).toBeTruthy();
+
+  const dpr = await frame!.evaluate(() => window.devicePixelRatio);
+  expect(dpr).toBeGreaterThanOrEqual(2);
+
+  await frame!.evaluate(() => {
+    const c = document.querySelector("canvas") as HTMLCanvasElement;
+    const rect = c.getBoundingClientRect();
+    c.dispatchEvent(
+      new MouseEvent("click", {
+        clientX: rect.left + rect.width * 0.12,
+        clientY: rect.top + rect.height * 0.5,
+        bubbles: true,
+      }),
+    );
+  });
+  await page.waitForURL("**/experience", { timeout: 10_000 });
+  expect(new URL(page.url()).pathname).toBe("/experience");
+  await context.close();
+});
