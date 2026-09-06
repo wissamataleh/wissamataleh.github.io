@@ -62,3 +62,35 @@ test("hub clicks work on a retina canvas (devicePixelRatio 2)", async ({ browser
   expect(new URL(page.url()).pathname).toBe("/experience");
   await context.close();
 });
+
+test("menu hubs are connected with constellation lines", async ({ page }) => {
+  await page.goto("/");
+  const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  expect(frame).toBeTruthy();
+
+  const midpoint = await frame!.evaluate(() => {
+    const pos = (window as any).__CF_HUB_POS as [number, number][];
+    return [(pos[0][0] + pos[2][0]) / 2, (pos[0][1] + pos[2][1]) / 2];
+  });
+
+  const lit = await frame!.evaluate((pt) => {
+    const c = document.querySelector("canvas") as HTMLCanvasElement;
+    const ctx = c.getContext("2d")!;
+    const scale = c.width / window.innerWidth;
+    const px = pt[0] * scale;
+    const py = pt[1] * scale;
+    const w = c.width, h = c.height;
+    const data = ctx.getImageData(0, 0, w, h).data;
+    let count = 0;
+    for (let dy = -14; dy <= 14; dy += 2) {
+      for (let dx = -14; dx <= 14; dx += 2) {
+        const x = Math.round(px + dx), y = Math.round(py + dy);
+        if (x < 0 || y < 0 || x >= w || y >= h) continue;
+        if (data[(y * w + x) * 4 + 3] > 0) count++;
+      }
+    }
+    return count;
+  }, midpoint as [number, number]);
+
+  expect(lit).toBeGreaterThan(1);
+});

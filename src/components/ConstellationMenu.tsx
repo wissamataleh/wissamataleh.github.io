@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { navigate } from "astro:transitions/client";
 import { ConstellationField } from "../effects/constellation-field/ConstellationField";
-import { buildMenuScript, NAV_SECTIONS } from "./menu/menuScript";
+import { buildMenuScript, NAV_SECTIONS, NAV_LINKS } from "./menu/menuScript";
 import "../effects/constellation-field/styles.css";
 
 type Mode = "dark" | "light";
@@ -29,7 +29,7 @@ export default function ConstellationMenu() {
   const [activeHref, setActiveHref] = useState("/");
   const pendingMode = useRef<Mode | null>(null);
   const timers = useRef<number[]>([]);
-  const menuScript = useMemo(() => buildMenuScript(NAV_SECTIONS), []);
+  const menuScript = useMemo(() => buildMenuScript(NAV_SECTIONS, NAV_LINKS), []);
 
   const setMode = (next: Mode) => {
     MODE_STORE.value = next;

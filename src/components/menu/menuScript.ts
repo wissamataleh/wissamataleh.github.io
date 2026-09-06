@@ -7,6 +7,16 @@ export type ConstellationMenuSection = {
   anchor: "left" | "right";
 };
 
+export type ConstellationLink = [number, number];
+
+export const NAV_LINKS: ConstellationLink[] = [
+  [0, 2],
+  [2, 4],
+  [1, 3],
+  [1, 2],
+  [3, 4],
+];
+
 export const NAV_SECTIONS: ConstellationMenuSection[] = [
   { id: "projects", label: "01 PROJECTS", href: "/projects", x: 0.88, y: 0.26, anchor: "left" },
   { id: "experience", label: "02 EXPERIENCE", href: "/experience", x: 0.12, y: 0.5, anchor: "right" },
@@ -15,7 +25,7 @@ export const NAV_SECTIONS: ConstellationMenuSection[] = [
   { id: "contact", label: "05 CONTACT", href: "/contact", x: 0.88, y: 0.74, anchor: "left" },
 ];
 
-const RUNTIME = `(function (DATA) {
+const RUNTIME = `(function (DATA, LINKS) {
   if (!nodes || !DATA || !DATA.length) return;
   var canvas = document.getElementById('constellationCanvas');
   if (!canvas) return;
@@ -72,7 +82,35 @@ const RUNTIME = `(function (DATA) {
     if (i < 0) return;
     window.parent.postMessage({ type: 'constellation-nav', href: DATA[i].href }, '*');
   });
+  function drawLinks() {
+    if (!LINKS || !LINKS.length) return;
+    var c = modeColor();
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'miter';
+    ctx.strokeStyle = c;
+    ctx.lineWidth = 1;
+    var dists = [];
+    var maxD = 0;
+    for (var k = 0; k < LINKS.length; k++) {
+      var a = hubs[LINKS[k][0]], b = hubs[LINKS[k][1]];
+      var dx = a.x - b.x, dy = a.y - b.y;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      dists[k] = d;
+      if (d > maxD) maxD = d;
+    }
+    var ref = maxD > 0 ? maxD : 1;
+    for (var l = 0; l < LINKS.length; l++) {
+      var p = hubs[LINKS[l][0]], q = hubs[LINKS[l][1]];
+      ctx.globalAlpha = 0.18 + (1 - dists[l] / ref) * 0.5;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(q.x, q.y);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
   function drawHubs() {
+    drawLinks();
     var c = modeColor();
     for (var i = 0; i < hubs.length; i++) {
       var s = DATA[i];
@@ -176,8 +214,12 @@ const RUNTIME = `(function (DATA) {
   }
 })`;
 
-export function buildMenuScript(sections: ConstellationMenuSection[]): string {
+export function buildMenuScript(
+  sections: ConstellationMenuSection[],
+  links: ConstellationLink[] = [],
+): string {
   if (!sections.length) return "";
   const json = JSON.stringify(sections).replace(/</g, "\\u003c");
-  return `<script data-threeui-menu>${RUNTIME}(${json});</script>`;
+  const linksJson = JSON.stringify(links);
+  return `<script data-threeui-menu>${RUNTIME}(${json}, ${linksJson});</script>`;
 }
