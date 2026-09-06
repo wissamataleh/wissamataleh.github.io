@@ -124,6 +124,17 @@ export default function ConstellationMenu() {
         <span className="site-coords" aria-hidden="true">
           47.3769N 08.5417E
         </span>
+        <nav className="site-nav" aria-label="primary">
+          {NAV_SECTIONS.map((s) => (
+            <a
+              key={s.id}
+              href={s.href}
+              className={matchHref(activeHref, s.href) ? "is-active" : undefined}
+            >
+              {s.label}
+            </a>
+          ))}
+        </nav>
         <span className="site-index" aria-hidden="true">
           {String(activeIndex).padStart(2, "0")}/06
         </span>
@@ -137,6 +148,16 @@ export default function ConstellationMenu() {
           {mode === "dark" ? "LIGHT" : "DARK"}
         </button>
       </header>
+      <div className="site-rail" aria-hidden="true">
+        {NAV_SECTIONS.map((s) => (
+          <span
+            key={s.id}
+            className={matchHref(activeHref, s.href) ? "is-active" : undefined}
+          >
+            {s.label.slice(0, 2)}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
