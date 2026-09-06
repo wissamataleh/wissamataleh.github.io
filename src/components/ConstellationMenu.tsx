@@ -29,6 +29,7 @@ export default function ConstellationMenu() {
   const [activeHref, setActiveHref] = useState("/");
   const pendingMode = useRef<Mode | null>(null);
   const timers = useRef<number[]>([]);
+  const frameWindow = useRef<Window | null>(null);
   const menuScript = useMemo(() => buildMenuScript(NAV_SECTIONS), []);
 
   const setMode = (next: Mode) => {
@@ -70,10 +71,32 @@ export default function ConstellationMenu() {
     setMode(MODE_STORE.value);
   }, []);
 
+  const sendBounds = () => {
+    const win = frameWindow.current;
+    if (!win || typeof window === "undefined") return;
+    const panels = Array.from(
+      document.querySelectorAll(".content-panel, .bio-panel"),
+    );
+    let right = Math.round(window.innerWidth * 0.42);
+    for (const el of panels) {
+      right = Math.max(right, Math.ceil(el.getBoundingClientRect().right));
+    }
+    right = Math.min(right + 56, Math.round(window.innerWidth - 160));
+    win.postMessage({ type: "constellation-bounds", minX: right }, "*");
+  };
+
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
-      const data = event.data as { type?: string; href?: unknown } | null;
-      if (!data || data.type !== "constellation-nav" || typeof data.href !== "string") return;
+      const data = event.data as
+        | { type?: string; href?: unknown; minX?: unknown }
+        | null;
+      if (!data) return;
+      if (data.type === "constellation-ready" && event.source) {
+        frameWindow.current = event.source as Window | null;
+        sendBounds();
+        return;
+      }
+      if (data.type !== "constellation-nav" || typeof data.href !== "string") return;
       if (data.href === window.location.pathname) return;
       void navigate(data.href);
     };
@@ -88,10 +111,14 @@ export default function ConstellationMenu() {
     };
     update();
     window.addEventListener("popstate", update);
+    window.addEventListener("resize", sendBounds);
     document.addEventListener("astro:page-load" as never, update);
+    document.addEventListener("astro:page-load" as never, sendBounds);
     return () => {
       window.removeEventListener("popstate", update);
+      window.removeEventListener("resize", sendBounds);
       document.removeEventListener("astro:page-load" as never, update);
+      document.removeEventListener("astro:page-load" as never, sendBounds);
     };
   }, []);
 

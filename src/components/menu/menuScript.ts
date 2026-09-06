@@ -41,16 +41,26 @@ const RUNTIME = `(function (DATA) {
     var mode = (window.__SF_CONTROLS && window.__SF_CONTROLS.mode) || 'dark';
     return palette[mode] || palette.dark;
   }
-  var hubs = [];
+var hubs = [];
+  var boundsMinX = Math.round(width * 0.42);
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'constellation-bounds' && typeof e.data.minX === 'number') {
+      boundsMinX = e.data.minX;
+    }
+  });
+  window.parent.postMessage({ type: 'constellation-ready' }, '*');
+  function boundX(x) {
+    return x < boundsMinX ? boundsMinX : x;
+  }
   for (var _i = 0; _i < DATA.length; _i++) {
     window.__CF_HUB_HREFS[_i] = DATA[_i].href;
     hubs.push({
       ax: DATA[_i].x * width,
       ay: DATA[_i].y * height,
-      x: DATA[_i].x * width,
+      x: boundX(DATA[_i].x * width),
       y: DATA[_i].y * height,
-      vx: (Math.random() - 0.5) * 0.6,
-      vy: (Math.random() - 0.5) * 0.6,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
     });
   }
   function hit(x, y) {
@@ -201,10 +211,10 @@ const RUNTIME = `(function (DATA) {
   function tick() {
     for (var i = 0; i < hubs.length; i++) {
       var h = hubs[i];
-      h.vx += (Math.random() - 0.5) * 0.04;
-      h.vy += (Math.random() - 0.5) * 0.04;
+      h.vx += (Math.random() - 0.5) * 0.02;
+      h.vy += (Math.random() - 0.5) * 0.02;
       var spd = Math.sqrt(h.vx * h.vx + h.vy * h.vy);
-      var vmax = 1.6;
+      var vmax = 0.9;
       if (spd > vmax) {
         h.vx = (h.vx / spd) * vmax;
         h.vy = (h.vy / spd) * vmax;
@@ -213,7 +223,8 @@ const RUNTIME = `(function (DATA) {
       h.y += h.vy;
       h.x += (h.ax - h.x) * 0.002;
       h.y += (h.ay - h.y) * 0.002;
-      if (h.x < 8 || h.x > width - 8) h.vx *= -1;
+      if (h.x < boundsMinX) { h.x = boundsMinX; if (h.vx < 0) h.vx *= -1; }
+      if (h.x > width - 8) h.vx *= -1;
       if (h.y < 8 || h.y > height - 8) h.vy *= -1;
     }
     drawHubs();
@@ -222,7 +233,7 @@ const RUNTIME = `(function (DATA) {
   }
   function reAnchor() {
     for (var i = 0; i < hubs.length; i++) {
-      hubs[i].ax = DATA[i].x * width;
+      hubs[i].ax = boundX(DATA[i].x * width);
       hubs[i].ay = DATA[i].y * height;
     }
     if (reduced) netDraw();
