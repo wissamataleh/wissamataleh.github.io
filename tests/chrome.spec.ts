@@ -8,7 +8,7 @@ test("nav row is hidden on desktop, visible with links on mobile", async ({ page
 
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(navRow).toBeVisible();
-  await expect(navRow.locator("a")).toHaveCount(5);
+  await expect(navRow.locator("a")).toHaveCount(6);
 
   await navRow.locator('a[href="/experience"]').click();
   await page.waitForURL("**/experience");

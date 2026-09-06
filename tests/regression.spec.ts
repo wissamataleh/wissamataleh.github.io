@@ -59,7 +59,7 @@ test("reduced motion freezes the field but menu still renders", async ({ page })
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   expect(frame).toBeTruthy();
   const hubCount = await frame!.evaluate(() => (window as any).__CF_HUB_COUNT ?? -1);
-  expect(hubCount).toBe(5);
+  expect(hubCount).toBe(6);
   await page.waitForTimeout(400);
   const a = await frame!.evaluate(() =>
     (document.querySelector("canvas") as HTMLCanvasElement).toDataURL(),

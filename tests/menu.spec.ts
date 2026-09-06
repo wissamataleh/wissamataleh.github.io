@@ -9,6 +9,21 @@ async function hubPos(frame: any, path: string) {
   }, path);
 }
 
+test("home hub navigates back to the index", async ({ page }) => {
+  await page.goto("/projects");
+  const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  expect(frame).toBeTruthy();
+
+  const home = await hubPos(frame!, "/");
+  await page.mouse.move(home.x, home.y);
+  await expect
+    .poll(async () => frame!.evaluate(() => (window as any).__CF_HOVER ?? null))
+    .toBe(0);
+  await page.mouse.click(home.x, home.y);
+  await page.waitForURL("**/", { timeout: 10_000 });
+  expect(new URL(page.url()).pathname).toBe("/");
+});
+
 test("hub glyphs render and clicking a hub navigates without reload", async ({ page }) => {
   const errors: string[] = [];
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
