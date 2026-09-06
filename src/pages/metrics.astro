@@ -1,0 +1,14 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { METRICS } from "../data/site";
+---
+<BaseLayout title="Metrics — Senior DevOps/SRE Engineer">
+  <section class="content-panel" data-page="metrics">
+    <p class="kicker">05 / METRICS (LIVE FEED SNAPSHOT)</p>
+    <div class="metric-grid">
+      <div class="metric-cell"><span class="metric-label">SLO</span><span class="metric-value">{METRICS.slo}%</span></div>
+      <div class="metric-cell"><span class="metric-label">UPTIME NOW</span><span class="metric-value">{METRICS.uptimeNow}%</span></div>
+      <div class="metric-cell"><span class="metric-label">P99</span><span class="metric-value">{METRICS.p99}</span></div>
+    </div>
+  </section>
+</BaseLayout>

@@ -82,7 +82,10 @@ export default function ConstellationMenu() {
   }, []);
 
   useEffect(() => {
-    const update = () => setActiveHref(window.location.pathname);
+    const update = () => {
+      setActiveHref(window.location.pathname);
+      document.documentElement.dataset.siteMode = MODE_STORE.value;
+    };
     update();
     window.addEventListener("popstate", update);
     document.addEventListener("astro:page-load" as never, update);

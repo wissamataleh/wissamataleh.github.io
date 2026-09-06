@@ -1,8 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../data/site";
 ---
-<BaseLayout title="Senior DevOps/SRE Engineer">
-  <article class="bio-panel">
-    <h1>Senior DevOps/SRE Engineer</h1>
+<BaseLayout title={`Home — ${SITE.role}`}>
+  <article class="content-panel" data-page="home">
+    <p class="kicker">SR0.OPERATOR // SUISSE</p>
+    <h1>{SITE.role}</h1>
+    <p class="tagline">{SITE.tagline}</p>
+    <div class="hairline" />
+    <dl class="stat-strip">
+      <div><dt>ON-CALL</dt><dd>24 / 7 / 365</dd></div>
+      <div><dt>INCIDENTS/CD</dt><dd>2.1</dd></div>
+      <div><dt>SLO</dt><dd>99.95%</dd></div>
+      <div><dt>MTTA</dt><dd>9m 40s</dd></div>
+    </dl>
+    <p class="hint">AIM &amp; CLICK A NODE TO NAVIGATE.</p>
   </article>
 </BaseLayout>

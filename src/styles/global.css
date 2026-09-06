@@ -176,3 +176,204 @@ body {
     transition: none;
   }
 }
+
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+.content-panel {
+  margin: 88px 24px 24px 24px;
+  max-width: 860px;
+  padding: 28px;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+}
+
+.content-panel h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  letter-spacing: 0.02em;
+  margin: 0 0 14px;
+}
+
+.content-panel h2 {
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  margin: 0 0 8px;
+}
+
+.tagline {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+  max-width: 58ch;
+}
+
+.hairline {
+  height: 1px;
+  background: var(--divide);
+  margin: 22px 0;
+}
+
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1px;
+  background: var(--divide);
+  border: 1px solid var(--divide);
+  margin: 0;
+}
+
+.stat-strip > div {
+  background: var(--panel);
+  padding: 12px;
+}
+
+.stat-strip dt,
+.metric-label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+.stat-strip dd,
+.metric-value {
+  font-size: 20px;
+  margin: 6px 0 0;
+  font-weight: 700;
+}
+
+.hint {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  margin-top: 22px;
+}
+
+.role {
+  border-top: 1px solid var(--divide);
+  padding: 20px 0;
+  display: grid;
+  gap: 12px;
+}
+
+.role-meta {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.role-stack,
+.project-stack {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.role-points {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.role-points li {
+  margin: 8px 0;
+  line-height: 1.55;
+  font-size: 13px;
+}
+
+.skill-group {
+  border-top: 1px solid var(--divide);
+  padding: 14px 0;
+}
+
+.skill-tags {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tags li {
+  border: 1px solid var(--divide);
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.project {
+  border-top: 1px solid var(--divide);
+  padding: 18px 0;
+}
+
+.project-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.project-status {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.project-summary {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: var(--divide);
+  border: 1px solid var(--divide);
+}
+
+.metric-cell {
+  background: var(--panel);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric-value {
+  font-size: 26px;
+}
+
+.contact-list {
+  display: grid;
+  gap: 1px;
+  background: var(--divide);
+  border: 1px solid var(--divide);
+  margin: 0;
+}
+
+.contact-list > div {
+  background: var(--panel);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contact-list dt {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+.contact-list dd {
+  margin: 0;
+}
+
+.contact-list a {
+  color: var(--fg);
+  text-underline-offset: 4px;
+}
