@@ -54,9 +54,22 @@ const RUNTIME = `(function (DATA) {
     });
   }
   function hit(x, y) {
+    ctx.font = '13px ' + mono;
     for (var i = 0; i < hubs.length; i++) {
-      var dx = hubs[i].x - x, dy = hubs[i].y - y;
+      var h = hubs[i];
+      var dx = h.x - x, dy = h.y - y;
       if (dx * dx + dy * dy < 32 * 32) return i;
+      var s = DATA[i];
+      var tw = ctx.measureText(s.label).width;
+      var x0, x1;
+      if (s.anchor === 'left') {
+        x0 = h.x - 16 - tw;
+        x1 = h.x - 16;
+      } else {
+        x0 = h.x + 16;
+        x1 = h.x + 16 + tw;
+      }
+      if (x >= x0 && x <= x1 && y >= h.y - 10 && y <= h.y + 10) return i;
     }
     return -1;
   }
@@ -124,13 +137,6 @@ const RUNTIME = `(function (DATA) {
       ctx.beginPath();
       ctx.arc(0, 0, DOT, 0, Math.PI * 2);
       ctx.fill();
-      if (on) {
-        ctx.strokeStyle = c;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(0, 0, 20, 0, Math.PI * 2);
-        ctx.stroke();
-      }
       ctx.font = '13px ' + mono;
       ctx.textBaseline = 'middle';
       ctx.globalAlpha = 0.8;

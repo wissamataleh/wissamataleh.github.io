@@ -34,6 +34,29 @@ test("hub glyphs render and clicking a hub navigates without reload", async ({ p
   expect(errors).toEqual([]);
 });
 
+test("hovering and clicking a nav label (text) triggers hover glow and navigates", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  expect(frame).toBeTruthy();
+
+  const labelRight = await frame!.evaluate(() => {
+    const idx = (window as any).__CF_HUB_HREFS.indexOf("/platform");
+    const pos = (window as any).__CF_HUB_POS as [number, number][];
+    return { x: pos[idx][0] + 18, y: pos[idx][1] };
+  });
+
+  await page.mouse.move(labelRight.x, labelRight.y);
+  await expect
+    .poll(async () => frame!.evaluate(() => (window as any).__CF_HOVER ?? null))
+    .toBe(2);
+
+  await page.mouse.click(labelRight.x, labelRight.y);
+  await page.waitForURL("**/platform", { timeout: 10_000 });
+  expect(new URL(page.url()).pathname).toBe("/platform");
+});
+
 test("dark/light toggle flips the field and persists across navigation", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "LIGHT" }).click();
