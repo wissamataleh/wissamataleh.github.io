@@ -377,3 +377,59 @@ body {
   color: var(--fg);
   text-underline-offset: 4px;
 }
+
+.metric-cell-wide {
+  grid-column: span 2;
+}
+
+.metric-hero {
+  font-size: 44px;
+  line-height: 1;
+}
+
+.metric-note {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.burn-bar {
+  height: 8px;
+  background: var(--divide);
+  border: 1px solid var(--divide);
+  position: relative;
+}
+
+.burn-fill {
+  height: 100%;
+  width: var(--burn, 0%);
+  background: var(--fg);
+}
+
+.led {
+  width: 10px;
+  height: 10px;
+  border: 1px solid currentColor;
+  background: currentColor;
+  animation: led-pulse 2s ease-in-out infinite;
+}
+
+@keyframes led-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.sparkline {
+  width: 100%;
+  height: auto;
+  display: block;
+  color: var(--fg);
+  border-top: 1px solid var(--divide);
+  margin-top: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .led {
+    animation: none;
+  }
+}

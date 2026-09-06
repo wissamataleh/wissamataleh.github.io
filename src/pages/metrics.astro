@@ -1,14 +1,67 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { METRICS } from "../data/site";
+const seriesJson = JSON.stringify(METRICS.series);
 ---
 <BaseLayout title="Metrics — Senior DevOps/SRE Engineer">
   <section class="content-panel" data-page="metrics">
-    <p class="kicker">05 / METRICS (LIVE FEED SNAPSHOT)</p>
+    <p class="kicker">05 / METRICS — LIVE FEED SNAPSHOT</p>
+
     <div class="metric-grid">
-      <div class="metric-cell"><span class="metric-label">SLO</span><span class="metric-value">{METRICS.slo}%</span></div>
-      <div class="metric-cell"><span class="metric-label">UPTIME NOW</span><span class="metric-value">{METRICS.uptimeNow}%</span></div>
-      <div class="metric-cell"><span class="metric-label">P99</span><span class="metric-value">{METRICS.p99}</span></div>
+      <div class="metric-cell metric-cell-wide">
+        <span class="metric-label">SLO (30 DAYS)</span>
+        <span class="metric-value metric-hero">{METRICS.slo}%</span>
+        <div class="burn-bar" style={`--burn: ${METRICS.errorBudgetRemaining}%`}>
+          <div class="burn-fill" />
+        </div>
+        <span class="metric-note">ERROR BUDGET USED {METRICS.errorBudgetRemaining}%</span>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-label">UPTIME NOW</span>
+        <span class="metric-value">{METRICS.uptimeNow}%</span>
+        <span class="led" aria-hidden="true" />
+      </div>
+      <div class="metric-cell">
+        <span class="metric-label">P99 / P95</span>
+        <span class="metric-value">{METRICS.p99}</span>
+        <span class="metric-note">P95 {METRICS.p95}</span>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-label">REQUEST RATE</span>
+        <span class="metric-value">{METRICS.reqRate}</span>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-cell metric-cell-wide">
+        <span class="metric-label">REQ/S — 30 DAY TRAIL</span>
+        <canvas class="sparkline" width="360" height="96" data-series={seriesJson} />
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>("canvas.sparkline");
+  if (canvas) {
+    const series = JSON.parse(canvas.dataset.series || "[]") as number[];
+    const rect = (n: number) => canvas.height - (n / 40) * canvas.height;
+    const ctx = canvas.getContext("2d")!;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "currentColor";
+    ctx.fillStyle = "currentColor";
+    ctx.globalAlpha = 0.85;
+    ctx.beginPath();
+    series.forEach((n, i) => {
+      const x = (i / (series.length - 1)) * canvas.width;
+      if (i === 0) ctx.moveTo(x, rect(n));
+      else ctx.lineTo(x, rect(n));
+    });
+    ctx.stroke();
+    ctx.globalAlpha = 0.35;
+    series.forEach((n, i) => {
+      const x = (i / (series.length - 1)) * canvas.width;
+      ctx.fillRect(x - 1, rect(n) - 1, 2, 2);
+    });
+  }
+</script>
