@@ -102,6 +102,7 @@ export default function ConstellationMenu() {
 
   return (
     <div
+      id="constellation-menu-root"
       className={`effect-frame site-constellation ${transitioning ? "is-transitioning" : ""}`}
       data-mode={mode}
     >

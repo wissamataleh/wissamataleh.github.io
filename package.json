@@ -9,7 +9,8 @@
     "check": "astro check",
     "lint": "oxlint",
     "preview": "astro preview",
-    "test": "playwright test"
+    "test": "playwright test",
+    "verify": "node scripts/verify-hashes.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

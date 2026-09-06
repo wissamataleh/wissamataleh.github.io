@@ -15,16 +15,19 @@ test("effect renders and draws pixels inside the sandboxed iframe", async ({ pag
 
   const frameHandle = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   expect(frameHandle).toBeTruthy();
-  const pixels = await frameHandle!.evaluate(() => {
-    const c = document.querySelector("canvas") as HTMLCanvasElement | null;
-    if (!c) return 0;
-    const ctx = c.getContext("2d")!;
-    const data = ctx.getImageData(0, 0, c.width, Math.min(400, c.height)).data;
-    let lit = 0;
-    for (let i = 3; i < data.length; i += 4) if (data[i] > 0) lit++;
-    return lit;
-  });
-  expect(pixels).toBeGreaterThan(1000);
+  await expect
+    .poll(async () =>
+      frameHandle!.evaluate(() => {
+        const c = document.querySelector("canvas") as HTMLCanvasElement | null;
+        if (!c) return 0;
+        const ctx = c.getContext("2d")!;
+        const data = ctx.getImageData(0, 0, c.width, Math.min(400, c.height)).data;
+        let lit = 0;
+        for (let i = 3; i < data.length; i += 4) if (data[i] > 0) lit++;
+        return lit;
+      }),
+    )
+    .toBeGreaterThan(1000);
   expect(errors).toEqual([]);
 });
 
