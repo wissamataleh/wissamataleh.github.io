@@ -20,6 +20,16 @@ const RUNTIME = `(function (DATA) {
   if (!nodes || !DATA || !DATA.length) return;
   var canvas = document.getElementById('constellationCanvas');
   if (!canvas) return;
+  function enableHits() {
+    var el = canvas;
+    el.style.setProperty('pointer-events', 'auto', 'important');
+    var parent = el.parentElement;
+    while (parent) {
+      parent.style.setProperty('pointer-events', 'auto', 'important');
+      parent = parent.parentElement;
+    }
+  }
+  enableHits();
   var ctx = canvas.getContext('2d');
   window.__CF_HUB_COUNT = DATA.length;
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -47,8 +57,14 @@ const RUNTIME = `(function (DATA) {
     return -1;
   }
   var hover = -1;
-  canvas.addEventListener('mousemove', function (e) { hover = hit(e.clientX, e.clientY); });
-  canvas.addEventListener('mouseleave', function () { hover = -1; });
+  canvas.addEventListener('mousemove', function (e) {
+    hover = hit(e.clientX, e.clientY);
+    window.__CF_HOVER = hover < 0 ? null : hover;
+  });
+  canvas.addEventListener('mouseleave', function () {
+    hover = -1;
+    window.__CF_HOVER = null;
+  });
   canvas.addEventListener('click', function (e) {
     var i = hit(e.clientX, e.clientY);
     if (i < 0) return;
