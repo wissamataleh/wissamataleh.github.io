@@ -1,0 +1,72 @@
+.effect-frame {
+  --mode-bg: #070914;
+  --mode-transition: 380ms;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--mode-bg);
+  transition: background-color var(--mode-transition) ease;
+}
+
+.effect-frame[data-mode="light"] {
+  --mode-bg: #eef1f6;
+}
+
+.effect-scene {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  transition: opacity var(--mode-transition) ease;
+}
+
+.effect-frame.is-transitioning .effect-scene {
+  opacity: 0;
+}
+
+.effect-scene iframe,
+.effect-scene [data-effect-frame] {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.effect-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  color: #ecece8;
+  background: rgba(14, 14, 18, 0.7);
+  font: 400 12px/1 ui-monospace, monospace;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+
+.effect-toggle:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(24, 24, 30, 0.85);
+}
+
+.effect-toggle[aria-pressed="true"] {
+  color: #1d1f26;
+  border-color: rgba(28, 30, 38, 0.5);
+  background: rgba(238, 241, 246, 0.92);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .effect-frame,
+  .effect-scene {
+    transition: none;
+  }
+}
