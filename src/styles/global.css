@@ -79,10 +79,10 @@ body {
   color: var(--fg);
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--fg) 14%, transparent) 0%,
+    color-mix(in srgb, var(--glow) 18%, transparent) 0%,
     transparent 62%
   );
-  box-shadow: 0 0 24px 4px color-mix(in srgb, var(--fg) 40%, transparent);
+  box-shadow: 0 0 24px 4px color-mix(in srgb, var(--glow) 45%, transparent);
 }
 
 .site-toggle:disabled {
@@ -100,6 +100,7 @@ body {
   --muted: #9aa3bc;
   --panel: rgba(7, 9, 20, 0.78);
   --divide: #3a3f52;
+  --glow: #eef1f6;
 }
 
 :root[data-site-mode="light"] {
@@ -108,6 +109,7 @@ body {
   --muted: #4a5164;
   --panel: rgba(238, 241, 246, 0.85);
   --divide: #181b26;
+  --glow: #c5970c;
 }
 
 :root {
