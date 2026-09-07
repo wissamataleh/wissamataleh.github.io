@@ -47,6 +47,16 @@ var hubs = [];
   window.addEventListener('message', function (e) {
     if (e.data && e.data.type === 'constellation-bounds' && typeof e.data.minX === 'number') {
       boundsMinX = e.data.minX;
+    } else if (e.data && e.data.type === 'constellation-route' && typeof e.data.href === 'string') {
+      for (var ri = 0; ri < DATA.length; ri++) {
+        if (DATA[ri].href === e.data.href) {
+          active = ri;
+          window.__CF_ACTIVE = active;
+          return;
+        }
+      }
+      active = -1;
+      window.__CF_ACTIVE = -1;
     }
   });
   window.parent.postMessage({ type: 'constellation-ready' }, '*');
@@ -85,6 +95,7 @@ var hubs = [];
     return -1;
   }
   var hover = -1;
+  var active = -1;
   function setCursor() {
     canvas.style.cursor = hover < 0 ? 'default' : 'pointer';
   }
@@ -131,7 +142,7 @@ var hubs = [];
     for (var i = 0; i < hubs.length; i++) {
       var s = DATA[i];
       var x = hubs[i].x, y = hubs[i].y;
-      var on = i === hover;
+      var on = i === hover || i === active;
       ctx.save();
       ctx.translate(x, y);
       if (on) {

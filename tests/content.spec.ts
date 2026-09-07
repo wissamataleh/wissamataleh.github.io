@@ -59,3 +59,36 @@ test("a panel taller than the viewport scrolls internally without moving the dec
   expect(await page.evaluate(() => Math.round(window.scrollY / window.innerHeight))).toBe(1);
 });
 
+test("scrolling updates the URL hash to the current page", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => window.scrollTo({ top: 4 * window.innerHeight, behavior: "instant" }));
+  await expect.poll(() => page.evaluate(() => new URL(location.href).hash)).toBe("#/contact");
+});
+
+test("a deep link opens scrolled to that page", async ({ page }) => {
+  await page.goto("/#/metrics");
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(3 * 900);
+  await expect(page.locator('[data-page="metrics"]')).toBeVisible();
+});
+
+test("back/forward navigates between deck pages", async ({ page }) => {
+  await page.goto("/");
+  const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  await frame!.evaluate(() => {
+    const c = document.querySelector("canvas") as HTMLCanvasElement;
+    const refs = (window as any).__CF_HUB_HREFS as string[];
+    const pos = (window as any).__CF_HUB_POS as [number, number][];
+    const i = refs.indexOf("/projects");
+    c.dispatchEvent(
+      new MouseEvent("click", {
+        clientX: pos[i][0],
+        clientY: pos[i][1],
+        bubbles: true,
+      }),
+    );
+  });
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(5 * 900);
+  await page.goBack();
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0);
+});
+

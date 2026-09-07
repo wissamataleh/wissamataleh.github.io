@@ -66,3 +66,25 @@ test("no console or page errors across the deck while scrolling", async ({ page 
   }
   expect(errors).toEqual([]);
 });
+
+test("back/forward restores hash and scroll without errors", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(String(e)));
+  await page.goto("/");
+  await page.evaluate(() => window.scrollTo({ top: 1, behavior: "instant" }));
+  const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  await frame!.evaluate(() => {
+    document.querySelector("canvas")!.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        clientX: (window as any).__CF_HUB_POS[3][0],
+        clientY: (window as any).__CF_HUB_POS[3][1],
+      }),
+    );
+  });
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(3 * 900);
+  await expect.poll(() => page.evaluate(() => new URL(location.href).hash)).toBe("#/metrics");
+  await page.goBack();
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0);
+  expect(errors).toEqual([]);
+});

@@ -136,3 +136,23 @@ test("menu hubs are connected with constellation lines", async ({ page }) => {
     )
     .toBeGreaterThan(5);
 });
+
+async function activeHubIndex(frame: any): Promise<number> {
+  return frame.evaluate(() => (window as any).__CF_ACTIVE ?? -1);
+}
+
+test("the hub for the current page is lit", async ({ page }) => {
+  await page.goto("/#/projects");
+  const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  expect(frame).toBeTruthy();
+  await expect.poll(() => activeHubIndex(frame!)).toBe(5);
+});
+
+test("the lit hub follows scrolling", async ({ page }) => {
+  await page.goto("/");
+  const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  expect(frame).toBeTruthy();
+  await page.mouse.move(200, 700);
+  await page.evaluate(() => window.scrollTo({ top: 2 * window.innerHeight, behavior: "instant" }));
+  await expect.poll(() => activeHubIndex(frame!)).toBe(2);
+});

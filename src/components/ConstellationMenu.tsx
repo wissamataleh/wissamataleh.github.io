@@ -22,10 +22,24 @@ function matchHref(pathname: string, href: string) {
   return pathname.startsWith(href);
 }
 
+function scrollToIndex(index: number, behavior: "instant" | "smooth") {
+  window.scrollTo({
+    top: index * window.innerHeight,
+    behavior: prefersReducedMotion() ? "instant" : behavior,
+  });
+}
+
+function routeFromHash() {
+  const hash = window.location.hash.slice(1);
+  const idx = NAV_SECTIONS.findIndex((s) => s.href === hash);
+  return idx >= 0 ? NAV_SECTIONS[idx].href : "/";
+}
+
 export default function ConstellationMenu() {
   const [mode, setModeState] = useState<Mode>(MODE_STORE.value);
   const [phase, setPhase] = useState<Phase>("idle");
   const [activeHref, setActiveHref] = useState("/");
+  const currentIndex = useRef<string>("/");
   const pendingMode = useRef<Mode | null>(null);
   const timers = useRef<number[]>([]);
   const frameWindow = useRef<Window | null>(null);
@@ -84,6 +98,17 @@ export default function ConstellationMenu() {
     win.postMessage({ type: "constellation-bounds", minX: right }, "*");
   };
 
+  const goTo = (href: string) => {
+    const idx = NAV_SECTIONS.findIndex((s) => s.href === href);
+    if (idx < 0) return;
+    if (href === currentIndex.current) return;
+    currentIndex.current = href;
+    setActiveHref(href);
+    window.history.pushState(null, "", "#" + href);
+    frameWindow.current?.postMessage({ type: "constellation-route", href }, "*");
+    scrollToIndex(idx, "smooth");
+  };
+
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       const data = event.data as
@@ -93,35 +118,71 @@ export default function ConstellationMenu() {
       if (data.type === "constellation-ready" && event.source) {
         frameWindow.current = event.source as Window | null;
         sendBounds();
+        frameWindow.current?.postMessage(
+          { type: "constellation-route", href: routeFromHash() },
+          "*",
+        );
         return;
       }
       if (data.type !== "constellation-nav" || typeof data.href !== "string") return;
-      const idx = NAV_SECTIONS.findIndex((s) => s.href === data.href);
-      if (idx < 0) return;
-      window.scrollTo({
-        top: idx * window.innerHeight,
-        behavior: prefersReducedMotion() ? "instant" : "smooth",
-      });
+      goTo(data.href);
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
   useEffect(() => {
-    const update = () => {
-      setActiveHref(window.location.pathname);
-      document.documentElement.dataset.siteMode = MODE_STORE.value;
+    const onScroll = () => {
+      const raw = document.scrollingElement?.scrollTop ?? 0;
+      const index = Math.min(
+        Math.max(Math.round(raw / window.innerHeight), 0),
+        NAV_SECTIONS.length - 1,
+      );
+      const href = NAV_SECTIONS[index].href;
+      if (href === currentIndex.current) return;
+      currentIndex.current = href;
+      setActiveHref(href);
+      window.history.replaceState(null, "", "#" + href);
+      frameWindow.current?.postMessage({ type: "constellation-route", href }, "*");
     };
-    update();
-    window.addEventListener("popstate", update);
-    window.addEventListener("resize", sendBounds);
-    document.addEventListener("astro:page-load" as never, update);
-    document.addEventListener("astro:page-load" as never, sendBounds);
+    const onResize = () => {
+      sendBounds();
+      if (document.scrollingElement) {
+        scrollToIndex(
+          Math.min(
+            Math.max(Math.round(document.scrollingElement.scrollTop / window.innerHeight), 0),
+            NAV_SECTIONS.length - 1,
+          ),
+          "instant",
+        );
+      }
+    };
+    const onPopState = () => {
+      const href = routeFromHash();
+      const idx = NAV_SECTIONS.findIndex((s) => s.href === href);
+      if (idx < 0) return;
+      const at = Math.round((document.scrollingElement?.scrollTop ?? 0) / window.innerHeight);
+      if (href === currentIndex.current && at === idx) return;
+      currentIndex.current = href;
+      setActiveHref(href);
+      scrollToIndex(idx, "smooth");
+    };
+
+    const initial = routeFromHash();
+    const initialIndex = NAV_SECTIONS.findIndex((s) => s.href === initial);
+    currentIndex.current = initial;
+    setActiveHref(initial);
+    if (initialIndex > 0) {
+      scrollToIndex(initialIndex, "instant");
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+    window.addEventListener("popstate", onPopState);
     return () => {
-      window.removeEventListener("popstate", update);
-      window.removeEventListener("resize", sendBounds);
-      document.removeEventListener("astro:page-load" as never, update);
-      document.removeEventListener("astro:page-load" as never, sendBounds);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("popstate", onPopState);
     };
   }, []);
 
