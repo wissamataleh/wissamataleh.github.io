@@ -23,6 +23,39 @@ Live at **[https://wissamataleh.github.io](https://wissamataleh.github.io)**
 - `npm run lint` — lint with Oxlint
 - `npm run verify` — verify the 8 authored effect sources remain unmodified
 
+## Layout
+
+```
+.
+├── .github/workflows/     # GitHub Actions deploy to GitHub Pages
+├── docs/                  # design specs & implementation plans
+├── public/                # favicon, downloadable CV PDF
+├── scripts/
+│   └── verify-hashes.mjs  # verifies the authored effect sources are unmodified
+├── src/
+│   ├── components/
+│   │   ├── ConstellationMenu.tsx   # header, controls, rail, route wiring
+│   │   └── menu/menuScript.ts      # hub positions & canvas menu script
+│   ├── data/
+│   │   └── site.ts                 # all site content (persona, experience, projects…)
+│   ├── effects/constellation-field/
+│   │   ├── ConstellationField.tsx  # Canvas 2D + WebGL wrapper
+│   │   ├── NeuformBatchEffects.tsx # effect runtime
+│   │   ├── sources/                # the 8 authored effect sources (verified, not edited)
+│   │   └── styles.css
+│   ├── layouts/
+│   │   └── BaseLayout.astro
+│   ├── pages/
+│   │   ├── index.astro             # the scroll-deck home page
+│   │   └── 404.astro
+│   └── styles/
+│       └── global.css               # design tokens, deck & chrome styles
+├── tests/                    # Playwright end-to-end suite
+├── astro.config.mjs
+├── package.json
+├── playwright.config.ts
+└── tsconfig*.json
+```
 
 ## Contact
 
