@@ -81,7 +81,7 @@ export default function ConstellationMenu() {
   };
 
   useEffect(() => {
-    setMode(MODE_STORE.value);
+    document.documentElement.dataset.siteMode = MODE_STORE.value;
   }, []);
 
   const sendBounds = () => {
