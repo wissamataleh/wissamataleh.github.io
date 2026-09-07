@@ -213,7 +213,15 @@ export default function ConstellationMenu() {
         />
       </div>
       <header className="site-bar">
-        <a href="#/" className="site-name" aria-label="home">
+        <a
+          href="#/"
+          className="site-name"
+          aria-label="home"
+          onClick={(e) => {
+            e.preventDefault();
+            goTo("/");
+          }}
+        >
           SR0.OPERATOR
         </a>
         <span className="site-coords" aria-hidden="true">
@@ -225,6 +233,10 @@ export default function ConstellationMenu() {
               key={s.id}
               href={"#" + s.href}
               className={matchHref(activeHref, s.href) ? "is-active" : undefined}
+              onClick={(e) => {
+                e.preventDefault();
+                goTo(s.href);
+              }}
             >
               {s.label}
             </a>
