@@ -47,7 +47,7 @@ body {
 
 .site-bar {
   position: fixed;
-  top: 0;
+  top: 24px;
   left: 0;
   right: 0;
   z-index: 20;
@@ -55,7 +55,7 @@ body {
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 0 20px;
+  padding: 0 20px 0 24px;
   background: transparent;
 }
 
