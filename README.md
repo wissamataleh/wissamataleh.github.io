@@ -13,6 +13,17 @@ Live at **[https://wissamataleh.github.io](https://wissamataleh.github.io)**
 - [Oxlint](https://oxc.rs/docs/guide/usage/linter) — linting
 - Deployed via GitHub Actions to GitHub Pages
 
+## Commands
+
+- `npm run dev` — start the Astro dev server
+- `npm run build` — build the static site to `dist/`
+- `npm run preview` — preview the production build
+- `npm test` — run the Playwright end-to-end suite
+- `npm run check` — type-check with `astro check`
+- `npm run lint` — lint with Oxlint
+- `npm run verify` — verify the 8 authored effect sources remain unmodified
+
+
 ## Contact
 
 - Email: [wissam_ataleh@outlook.com](mailto:wissam_ataleh@outlook.com)
