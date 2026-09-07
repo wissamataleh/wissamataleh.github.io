@@ -28,7 +28,6 @@ Live at **[https://wissamataleh.github.io](https://wissamataleh.github.io)**
 ```
 .
 ├── .github/workflows/     # GitHub Actions deploy to GitHub Pages
-├── docs/                  # design specs & implementation plans
 ├── public/                # favicon, downloadable CV PDF
 ├── scripts/
 │   └── verify-hashes.mjs  # verifies the authored effect sources are unmodified
