@@ -243,7 +243,7 @@ export default function ConstellationMenu() {
             </svg>
           </a>
           <a
-            href="https://github.com/wissamataleh/wissamataleh.github.io"
+            href="https://github.com/wissamataleh"
             className="site-github"
             aria-label="View the source on GitHub"
             target="_blank"
