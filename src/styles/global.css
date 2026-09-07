@@ -80,25 +80,14 @@ body {
 
 .site-toggle,
 .site-github,
-.site-linkedin {
+.site-linkedin,
+.site-cv {
   width: 44px;
   height: 44px;
   display: grid;
   place-items: center;
   border-radius: 50%;
   padding: 0;
-}
-
-.site-cv {
-  height: 44px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid var(--divide);
-  border-radius: 999px;
-  font-size: 11px;
-  letter-spacing: 0.12em;
 }
 
 .site-github,

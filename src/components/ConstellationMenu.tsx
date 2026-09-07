@@ -294,7 +294,6 @@ export default function ConstellationMenu() {
               <path d="M7 10l5 5 5-5" />
               <path d="M12 15V3" />
             </svg>
-            <span>CV</span>
           </a>
           <button
             type="button"
