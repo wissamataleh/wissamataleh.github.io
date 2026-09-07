@@ -31,7 +31,7 @@ test("constellation keeps running across navigation (iframe not recreated)", asy
 
 test("mode persists when scrolling between pages", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "LIGHT" }).click();
+  await page.getByRole("button", { name: /switch to (light|dark) mode/i }).click();
   await expect(page.locator("html")).toHaveAttribute("data-site-mode", "light");
   await page.evaluate(() => window.scrollTo({ top: 2 * window.innerHeight, behavior: "instant" }));
   await expect(page.locator("html")).toHaveAttribute("data-site-mode", "light");

@@ -56,22 +56,40 @@ body {
   align-items: center;
   gap: 20px;
   padding: 0 20px;
-  border-bottom: 1px solid currentColor;
-  background: rgba(7, 9, 20, 0.55);
-}
-
-.site-bar .site-index {
-  margin-left: auto;
+  background: transparent;
 }
 
 .site-toggle {
-  border: 1px solid currentColor;
+  position: fixed;
+  top: 28px;
+  right: 16px;
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
   background: transparent;
-  color: inherit;
-  font: 700 11px ui-monospace, monospace;
-  letter-spacing: 0.14em;
-  padding: 8px 14px;
+  border: none;
+  border-radius: 50%;
+  color: var(--muted);
+  padding: 0;
   cursor: pointer;
+  transition: color 380ms ease, box-shadow 380ms ease, background 380ms ease;
+}
+
+.site-toggle:hover {
+  color: var(--fg);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--fg) 14%, transparent) 0%,
+    transparent 62%
+  );
+  box-shadow: 0 0 24px 4px color-mix(in srgb, var(--fg) 40%, transparent);
+}
+
+.site-toggle:disabled {
+  cursor: default;
+  opacity: 0.5;
 }
 
 .probe {
@@ -111,7 +129,7 @@ body {
 
 .site-bar {
   align-items: baseline;
-  background: var(--panel);
+  background: transparent;
   color: var(--fg);
 }
 
@@ -149,11 +167,12 @@ body {
 
 .site-rail {
   position: fixed;
-  left: 12px;
-  bottom: 12px;
+  right: 30px;
+  bottom: 2px;
   z-index: 20;
   display: flex;
   flex-direction: column-reverse;
+  align-items: flex-end;
   gap: 6px;
   font-size: 10px;
   color: var(--muted);
@@ -170,9 +189,6 @@ body {
   }
   .site-coords {
     display: none;
-  }
-  .site-index {
-    margin-left: 0;
   }
 }
 

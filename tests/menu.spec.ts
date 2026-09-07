@@ -72,7 +72,7 @@ test("hovering and clicking a nav label (text) triggers hover glow and navigates
 
 test("dark/light toggle flips the field and persists across navigation", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "LIGHT" }).click();
+  await page.getByRole("button", { name: /switch to (light|dark) mode/i }).click();
   await expect(page.locator("html")).toHaveAttribute("data-site-mode", "light");
 
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
