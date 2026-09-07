@@ -8,7 +8,7 @@ Live at **[https://wissamataleh.github.io](https://wissamataleh.github.io)**
 
 - [Astro](https://astro.build) — static site generation
 - [React 19](https://react.dev) — header/menu UI
-- Canvas 2D + Raw WebGL — rendered constellation field effect
+- Canvas 2D + Raw WebGL — constellation field effect, from the authored ThreeUI sources in `src/effects/constellation-field/sources/`
 - [Playwright](https://playwright.dev) — end-to-end tests
 - [Oxlint](https://oxc.rs/docs/guide/usage/linter) — linting
 - Deployed via GitHub Actions to GitHub Pages
@@ -61,4 +61,3 @@ Live at **[https://wissamataleh.github.io](https://wissamataleh.github.io)**
 - Email: [wissam_ataleh@outlook.com](mailto:wissam_ataleh@outlook.com)
 - GitHub: [github.com/wissamataleh](https://github.com/wissamataleh)
 - LinkedIn: [linkedin.com/in/wissamataleh](https://www.linkedin.com/in/wissamataleh)
-- CV: [WISSAM-ATALEH-DEVOPS-SRE-CV.pdf](/WISSAM-ATALEH-DEVOPS-SRE-CV.pdf)
