@@ -30,7 +30,7 @@ export const EXPERIENCE: Role[] = [
     title: "Senior Site Reliability Engineer II",
     company: "Careem",
     period: "Sep 2024 — May 2026 · Amman, Jordan",
-    stack: ["Go", "Kubernetes", "Terraform", "ArgoCD", "GitHub Actions", "AWS EKS"],
+    stack: ["AWS", "EKS", "Kubernetes", "Go", "Terraform", "ArgoCD", "GitHub Actions"],
     points: [
       "Architected and deployed the \"Placement Operator\", a custom Go Kubernetes controller automating pod placement and PDB-aware workload rotation across 14 clusters and hundreds of services — with zero downtime.",
       "Optimized multi-cluster AWS environments using Terraform (IaC) to lower compute costs while keeping Rides, Food, and Pay verticals highly available.",
@@ -42,7 +42,7 @@ export const EXPERIENCE: Role[] = [
     title: "Senior DevOps Engineer",
     company: "BeyondAI (Beyond Limits)",
     period: "Oct 2021 — Sep 2024 · Glendale, CA / Remote",
-    stack: ["Kubernetes", "NVIDIA GPU", "Terraform", "HashiCorp Vault", "Prometheus", "Kubeflow"],
+    stack: ["AWS", "EKS", "AKS", "Kubernetes", "NVIDIA GPU", "Terraform", "HashiCorp Vault", "Prometheus", "Kubeflow"],
     points: [
       "Provisioned and administrated production Kubernetes clusters across private on-premises and hybrid clouds, including NVIDIA GPU nodes for deep-learning training and real-time inference.",
       "Spearheaded MLOps infrastructure with Kubeflow, MLflow, and KServe to build scalable model-serving platforms and automated feature stores.",
@@ -75,7 +75,7 @@ export const EDUCATION = [
 export type SkillGroup = { name: string; tags: string[] };
 
 export const SKILLS: SkillGroup[] = [
-  { name: "CLOUD & ON-PREMISE", tags: ["AWS EKS", "Azure AKS", "Bare-Metal K8s", "Rancher", "DigitalOcean"] },
+  { name: "CLOUD & ON-PREMISE", tags: ["AWS", "Kubernetes", "AWS EKS", "Azure AKS", "Bare-Metal K8s", "DigitalOcean", "Rancher"] },
   { name: "INFRASTRUCTURE AS CODE", tags: ["Terraform", "Ansible", "Helm", "Kustomize"] },
   { name: "OBSERVABILITY & TELEMETRY", tags: ["Prometheus", "Grafana", "OpenTelemetry", "Loki", "ELK Stack", "Dynatrace"] },
   { name: "SECURITY & GOVERNANCE", tags: ["HashiCorp Vault", "Keycloak", "RBAC", "Trivy", "SonarQube", "Kyverno", "Network Policies", "SOC 2"] },
