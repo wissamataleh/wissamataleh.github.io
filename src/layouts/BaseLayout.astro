@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import ConstellationMenu from "../components/ConstellationMenu";
 
@@ -18,41 +17,11 @@ const { title = "Senior DevOps/SRE Engineer" } = Astro.props;
     <meta name="description" content="Senior DevOps/SRE Engineer — portfolio" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
-    <ClientRouter />
   </head>
   <body>
-    <ConstellationMenu client:load transition:persist />
-    <main class="site-content" data-page>
+    <ConstellationMenu client:load />
+    <main class="site-content">
       <slot />
     </main>
-    <script>
-      (() => {
-        const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-        let observer: IntersectionObserver | null = null;
-
-        function init() {
-          const panel = document.querySelector<HTMLElement>(".content-panel");
-          if (!panel) return;
-          if (observer) observer.disconnect();
-          if (reduced) return;
-          panel.classList.add("js-reveal");
-          observer = new IntersectionObserver(
-            (entries) => {
-              for (const entry of entries) {
-                if (entry.isIntersecting) {
-                  entry.target.classList.add("is-visible");
-                  observer!.unobserve(entry.target);
-                }
-              }
-            },
-            { root: panel, threshold: 0.08 },
-          );
-          for (const el of panel.children) observer.observe(el);
-        }
-
-        init();
-        document.addEventListener("astro:page-load", init);
-      })();
-    </script>
   </body>
 </html>

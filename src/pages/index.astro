@@ -1,19 +1,147 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE } from "../data/site";
+import { SITE, EXPERIENCE, SKILLS, PROJECTS, METRICS, CONTACT } from "../data/site";
+const seriesJson = JSON.stringify(METRICS.series);
 ---
-<BaseLayout title={`Home — ${SITE.role}`}>
-  <article class="content-panel" data-page="home">
-    <p class="kicker">SR0.OPERATOR // SUISSE</p>
-    <h1>{SITE.role}</h1>
-    <p class="tagline">{SITE.tagline}</p>
-    <div class="hairline" />
-    <dl class="stat-strip">
-      <div><dt>ON-CALL</dt><dd>24 / 7 / 365</dd></div>
-      <div><dt>INCIDENTS/CD</dt><dd>2.1</dd></div>
-      <div><dt>SLO</dt><dd>99.95%</dd></div>
-      <div><dt>MTTA</dt><dd>9m 40s</dd></div>
-    </dl>
-    <p class="hint">AIM &amp; CLICK A NODE TO NAVIGATE.</p>
-  </article>
+<BaseLayout title={`${SITE.handle} — ${SITE.role}`}>
+  <section class="deck-page" data-page="home">
+    <article class="content-panel">
+      <p class="kicker">SR0.OPERATOR // SUISSE</p>
+      <h1>{SITE.role}</h1>
+      <p class="tagline">{SITE.tagline}</p>
+      <div class="hairline" />
+      <dl class="stat-strip">
+        <div><dt>ON-CALL</dt><dd>24 / 7 / 365</dd></div>
+        <div><dt>INCIDENTS/CD</dt><dd>2.1</dd></div>
+        <div><dt>SLO</dt><dd>99.95%</dd></div>
+        <div><dt>MTTA</dt><dd>9m 40s</dd></div>
+      </dl>
+      <p class="hint">SCROLL TO NAVIGATE — OR AIM &amp; CLICK A NODE.</p>
+    </article>
+  </section>
+
+  <section class="deck-page" data-page="experience">
+    <section class="content-panel">
+      <p class="kicker">02 / EXPERIENCE</p>
+      {EXPERIENCE.map((role) => (
+        <article class="role">
+          <div class="role-head">
+            <h2>{role.title}</h2>
+            <p class="role-meta">{role.company} — {role.period}</p>
+            <p class="role-stack">{role.stack.join(" / ")}</p>
+          </div>
+          <ul class="role-points">
+            {role.points.map((point) => (
+              <li>{point}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </section>
+  </section>
+
+  <section class="deck-page" data-page="platform">
+    <section class="content-panel">
+      <p class="kicker">03 / PLATFORM &amp; SKILLS</p>
+      {SKILLS.map((group) => (
+        <div class="skill-group">
+          <h2>{group.name}</h2>
+          <ul class="skill-tags">
+            {group.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  </section>
+
+  <section class="deck-page" data-page="metrics">
+    <section class="content-panel">
+      <p class="kicker">04 / METRICS — LIVE FEED SNAPSHOT</p>
+      <div class="metric-grid">
+        <div class="metric-cell metric-cell-wide">
+          <span class="metric-label">SLO (30 DAYS)</span>
+          <span class="metric-value metric-hero">{METRICS.slo}%</span>
+          <div class="burn-bar" style={`--burn: ${METRICS.errorBudgetRemaining}%`}>
+            <div class="burn-fill" />
+          </div>
+          <span class="metric-note">ERROR BUDGET USED {METRICS.errorBudgetRemaining}%</span>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">UPTIME NOW</span>
+          <span class="metric-value">{METRICS.uptimeNow}%</span>
+          <span class="led" aria-hidden="true" />
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">P99 / P95</span>
+          <span class="metric-value">{METRICS.p99}</span>
+          <span class="metric-note">P95 {METRICS.p95}</span>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">REQUEST RATE</span>
+          <span class="metric-value">{METRICS.reqRate}</span>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-cell metric-cell-wide">
+          <span class="metric-label">REQ/S — 30 DAY TRAIL</span>
+          <canvas class="sparkline" width="360" height="96" data-series={seriesJson} />
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <section class="deck-page" data-page="contact">
+    <section class="content-panel">
+      <p class="kicker">05 / CONTACT</p>
+      <p class="tagline">{CONTACT.availability}</p>
+      <dl class="contact-list">
+        <div><dt>EMAIL</dt><dd><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></dd></div>
+        <div><dt>GITHUB</dt><dd><a href={CONTACT.github} target="_blank" rel="noreferrer">{CONTACT.github}</a></dd></div>
+        <div><dt>LINKEDIN</dt><dd><a href={CONTACT.linkedin} target="_blank" rel="noreferrer">{CONTACT.linkedin}</a></dd></div>
+      </dl>
+    </section>
+  </section>
+
+  <section class="deck-page" data-page="projects">
+    <section class="content-panel">
+      <p class="kicker">06 / PROJECTS</p>
+      {PROJECTS.map((project) => (
+        <article class="project">
+          <div class="project-head">
+            <h2>{project.name}</h2>
+            <span class="project-status">{project.status}</span>
+          </div>
+          <p class="project-summary">{project.summary}</p>
+          <p class="project-stack">{project.stack.join(" / ")}</p>
+        </article>
+      ))}
+    </section>
+  </section>
 </BaseLayout>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>("canvas.sparkline");
+  if (canvas) {
+    const series = JSON.parse(canvas.dataset.series || "[]") as number[];
+    const rect = (n: number) => canvas.height - (n / 40) * canvas.height;
+    const ctx = canvas.getContext("2d")!;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "currentColor";
+    ctx.fillStyle = "currentColor";
+    ctx.globalAlpha = 0.85;
+    ctx.beginPath();
+    series.forEach((n, i) => {
+      const x = (i / (series.length - 1)) * canvas.width;
+      if (i === 0) ctx.moveTo(x, rect(n));
+      else ctx.lineTo(x, rect(n));
+    });
+    ctx.stroke();
+    ctx.globalAlpha = 0.35;
+    series.forEach((n, i) => {
+      const x = (i / (series.length - 1)) * canvas.width;
+      ctx.fillRect(x - 1, rect(n) - 1, 2, 2);
+    });
+  }
+</script>

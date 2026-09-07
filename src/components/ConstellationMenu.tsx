@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { navigate } from "astro:transitions/client";
 import { ConstellationField } from "../effects/constellation-field/ConstellationField";
 import { buildMenuScript, NAV_SECTIONS } from "./menu/menuScript";
 import "../effects/constellation-field/styles.css";
@@ -97,8 +96,12 @@ export default function ConstellationMenu() {
         return;
       }
       if (data.type !== "constellation-nav" || typeof data.href !== "string") return;
-      if (data.href === window.location.pathname) return;
-      void navigate(data.href);
+      const idx = NAV_SECTIONS.findIndex((s) => s.href === data.href);
+      if (idx < 0) return;
+      window.scrollTo({
+        top: idx * window.innerHeight,
+        behavior: prefersReducedMotion() ? "instant" : "smooth",
+      });
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
@@ -149,7 +152,7 @@ export default function ConstellationMenu() {
         />
       </div>
       <header className="site-bar">
-        <a href="/" className="site-name" aria-label="home">
+        <a href="#/" className="site-name" aria-label="home">
           SR0.OPERATOR
         </a>
         <span className="site-coords" aria-hidden="true">
@@ -159,7 +162,7 @@ export default function ConstellationMenu() {
           {NAV_SECTIONS.map((s) => (
             <a
               key={s.id}
-              href={s.href}
+              href={"#" + s.href}
               className={matchHref(activeHref, s.href) ? "is-active" : undefined}
             >
               {s.label}

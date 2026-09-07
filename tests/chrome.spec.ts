@@ -10,9 +10,9 @@ test("nav row is hidden on desktop, visible with links on mobile", async ({ page
   await expect(navRow).toBeVisible();
   await expect(navRow.locator("a")).toHaveCount(6);
 
-  await navRow.locator('a[href="/experience"]').click();
-  await page.waitForURL("**/experience");
-  await expect(page.locator("a.is-active[href='/experience']")).toHaveCount(1);
+  await navRow.locator('a[href="#/experience"]').click();
+  expect(new URL(page.url()).pathname).toBe("/");
+  await expect.poll(() => page.evaluate(() => new URL(location.href).hash)).toBe("#/experience");
 });
 
 test("no horizontal overflow at mobile width", async ({ page }) => {

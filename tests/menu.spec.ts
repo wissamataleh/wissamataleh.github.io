@@ -9,8 +9,9 @@ async function hubPos(frame: any, path: string) {
   }, path);
 }
 
-test("home hub navigates back to the index", async ({ page }) => {
-  await page.goto("/projects");
+test("home hub scrolls back to the top", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => window.scrollTo({ top: 4 * window.innerHeight, behavior: "instant" }));
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   expect(frame).toBeTruthy();
 
@@ -20,8 +21,7 @@ test("home hub navigates back to the index", async ({ page }) => {
     .poll(async () => frame!.evaluate(() => (window as any).__CF_HOVER ?? null))
     .toBe(0);
   await page.mouse.click(home.x, home.y);
-  await page.waitForURL("**/", { timeout: 10_000 });
-  expect(new URL(page.url()).pathname).toBe("/");
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0);
 });
 
 test("hub glyphs render and clicking a hub navigates without reload", async ({ page }) => {
@@ -44,8 +44,7 @@ test("hub glyphs render and clicking a hub navigates without reload", async ({ p
     .toBe(1);
 
   await page.mouse.click(exp.x, exp.y);
-  await page.waitForURL("**/experience", { timeout: 10_000 });
-  expect(new URL(page.url()).pathname).toBe("/experience");
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(1 * 900);
   expect(errors).toEqual([]);
 });
 
@@ -68,8 +67,7 @@ test("hovering and clicking a nav label (text) triggers hover glow and navigates
     .toBe(2);
 
   await page.mouse.click(labelRight.x, labelRight.y);
-  await page.waitForURL("**/platform", { timeout: 10_000 });
-  expect(new URL(page.url()).pathname).toBe("/platform");
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(2 * 900);
 });
 
 test("dark/light toggle flips the field and persists across navigation", async ({ page }) => {
@@ -80,7 +78,7 @@ test("dark/light toggle flips the field and persists across navigation", async (
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   const contact = await hubPos(frame!, "/contact");
   await page.mouse.click(contact.x, contact.y);
-  await page.waitForURL("**/contact", { timeout: 10_000 });
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(4 * 900);
   await expect(page.locator("html")).toHaveAttribute("data-site-mode", "light");
 });
 
@@ -96,8 +94,7 @@ test("hub clicks work on a retina canvas (devicePixelRatio 2)", async ({ browser
 
   const exp = await hubPos(frame!, "/experience");
   await page.mouse.click(exp.x, exp.y);
-  await page.waitForURL("**/experience", { timeout: 10_000 });
-  expect(new URL(page.url()).pathname).toBe("/experience");
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(1 * 900);
   await context.close();
 });
 

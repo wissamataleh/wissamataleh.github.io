@@ -1,7 +1,8 @@
 import { test, expect } from "@playwright/test";
 
 test("metrics page shows instrument panels and a drawn sparkline", async ({ page }) => {
-  await page.goto("/metrics");
+  await page.goto("/");
+  await page.evaluate(() => window.scrollTo({ top: 3 * window.innerHeight, behavior: "instant" }));
   await expect(page.locator('[data-page="metrics"]')).toBeVisible();
   await expect(page.locator(".metric-value").first()).toContainText("99.95");
 
@@ -20,7 +21,8 @@ test("metrics page shows instrument panels and a drawn sparkline", async ({ page
 
 test("led does not pulse under reduced motion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/metrics");
+  await page.goto("/");
+  await page.evaluate(() => window.scrollTo({ top: 3 * window.innerHeight, behavior: "instant" }));
   const animated = await page.locator(".led").evaluate((el) => {
     return getComputedStyle(el).animationName !== "none";
   });

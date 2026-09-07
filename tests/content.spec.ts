@@ -1,24 +1,26 @@
 import { test, expect } from "@playwright/test";
 
-test("each of the six routes renders its own content", async ({ page }) => {
-  const routes = [
-    { path: "/", marker: "Senior DevOps/SRE Engineer" },
-    { path: "/experience", marker: "EXPERIENCE" },
-    { path: "/platform", marker: "PLATFORM" },
-    { path: "/projects", marker: "PROJECTS" },
-    { path: "/metrics", marker: "METRICS" },
-    { path: "/contact", marker: "CONTACT" },
-  ];
-  for (const route of routes) {
-    await page.goto(route.path);
-    await expect(page.locator(`[data-page="${route.path === "/" ? "home" : route.path.slice(1)}"]`)).toBeVisible();
-    await expect(page.locator("body")).toContainText(route.marker);
+const SECTIONS = [
+  { id: "home", marker: "Senior DevOps/SRE Engineer" },
+  { id: "experience", marker: "02 / EXPERIENCE" },
+  { id: "platform", marker: "03 / PLATFORM" },
+  { id: "metrics", marker: "04 / METRICS" },
+  { id: "contact", marker: "05 / CONTACT" },
+  { id: "projects", marker: "06 / PROJECTS" },
+];
+
+test("all six pages render as sections of the deck on the index route", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator(".deck-page")).toHaveCount(6);
+  for (const s of SECTIONS) {
+    await expect(page.locator(`.deck-page[data-page="${s.id}"]`)).toContainText(s.marker);
   }
 });
 
-test("hub navigation lands on real content, not 404", async ({ page }) => {
+test("clicking the projects hub scrolls the projects page into view", async ({ page }) => {
   await page.goto("/");
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
+  expect(frame).toBeTruthy();
   await frame!.evaluate(() => {
     const c = document.querySelector("canvas") as HTMLCanvasElement;
     const refs = (window as any).__CF_HUB_HREFS as string[];
@@ -32,38 +34,28 @@ test("hub navigation lands on real content, not 404", async ({ page }) => {
       }),
     );
   });
-  await page.waitForURL("**/projects", { timeout: 10_000 });
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(5 * 900);
   await expect(page.locator('[data-page="projects"]')).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe("/");
 });
 
-test("content sections slide into view in order as the panel scrolls", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 600 });
-  await page.goto("/experience");
-  const panel = page.locator('[data-page="experience"]');
-  await expect(panel).toBeVisible();
-  await expect
-    .poll(() => panel.locator(":scope > .kicker").evaluate((el) => el.classList.contains("is-visible")))
-    .toBe(true);
-  const lastRole = panel.locator(":scope > article.role").last();
-  await expect(lastRole).toHaveCount(1);
-  expect(await lastRole.evaluate((el) => el.classList.contains("is-visible"))).toBe(false);
-  await page.evaluate(() => {
-    const p = document.querySelector(".content-panel") as HTMLElement;
-    p.scrollTop = p.scrollHeight;
-  });
-  await expect
-    .poll(() => lastRole.evaluate((el) => el.classList.contains("is-visible")))
-    .toBe(true);
+test("wheel over the empty field area scrolls the deck", async ({ page }) => {
+  await page.goto("/");
+  await page.mouse.move(1150, 450);
+  await page.mouse.wheel(0, 420);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
 });
 
-test("reduced motion shows content immediately without reveal state", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+test("a panel taller than the viewport scrolls internally without moving the deck", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 600 });
-  await page.goto("/experience");
-  const panel = page.locator('[data-page="experience"]');
-  await expect(panel.locator(":scope > .kicker").first()).toBeVisible();
-  expect(
-    await panel.evaluate((el) => el.classList.contains("js-reveal")),
-  ).toBe(false);
-  expect(await panel.locator(":scope > article.role").last().isVisible()).toBe(true);
+  await page.goto("/");
+  await page.evaluate(() => window.scrollTo({ top: 1 * window.innerHeight, behavior: "instant" }));
+  await page.mouse.move(220, 300);
+  await page.mouse.wheel(0, 240);
+  const panel = page.locator('.deck-page[data-page="experience"] .content-panel');
+  await expect
+    .poll(async () => panel.evaluate((el) => (el as HTMLElement).scrollTop))
+    .toBeGreaterThan(0);
+  expect(await page.evaluate(() => Math.round(window.scrollY / window.innerHeight))).toBe(1);
 });
+
