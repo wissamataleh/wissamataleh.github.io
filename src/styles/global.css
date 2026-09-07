@@ -76,13 +76,14 @@ body {
 }
 
 .site-toggle:hover {
-  color: var(--fg);
+  color: var(--glow);
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--glow) 18%, transparent) 0%,
-    transparent 62%
+    color-mix(in srgb, var(--glow) 28%, var(--bg)) 0%,
+    color-mix(in srgb, var(--glow) 8%, var(--bg)) 46%,
+    var(--bg) 70%
   );
-  box-shadow: 0 0 24px 4px color-mix(in srgb, var(--glow) 45%, transparent);
+  box-shadow: 0 0 24px 4px color-mix(in srgb, var(--glow) 50%, var(--bg));
 }
 
 .site-toggle:disabled {
