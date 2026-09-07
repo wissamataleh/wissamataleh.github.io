@@ -224,21 +224,6 @@ export default function ConstellationMenu() {
         >
           {SITE.handle}
         </a>
-        <nav className="site-nav" aria-label="primary">
-          {NAV_SECTIONS.map((s) => (
-            <a
-              key={s.id}
-              href={"#" + s.href}
-              className={matchHref(activeHref, s.href) ? "is-active" : undefined}
-              onClick={(e) => {
-                e.preventDefault();
-                goTo(s.href);
-              }}
-            >
-              {s.label}
-            </a>
-          ))}
-        </nav>
         <div className="site-controls">
           <a
             href={CONTACT.linkedin}

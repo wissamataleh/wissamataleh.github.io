@@ -154,12 +154,6 @@ body {
   transition: background-color 380ms ease, color 380ms ease;
 }
 
-.site-nav {
-  display: none;
-  gap: 12px;
-  margin-left: auto;
-}
-
 .site-name {
   color: var(--fg);
   text-decoration: none;
@@ -169,19 +163,6 @@ body {
 }
 
 .site-name:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.site-nav a {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-}
-
-.site-nav a.is-active {
-  color: var(--fg);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -205,13 +186,7 @@ body {
 }
 
 @media (max-width: 767px) {
-  .site-nav {
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .site-nav::-webkit-scrollbar {
+  .site-rail {
     display: none;
   }
 }
