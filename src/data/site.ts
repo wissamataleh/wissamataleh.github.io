@@ -11,7 +11,7 @@ export const SITE = {
     "8+ years architecting, automating, and scaling production-grade Kubernetes infrastructure across AWS, Azure, public cloud, and enterprise on-premises. CKA & Terraform-certified. Deep in GPU-enabled AI/ML platform engineering, zero-trust security, and high-throughput telemetry across hybrid architectures.",
   stats: [
     { label: "EXPERIENCE", value: "8+ YRS" },
-    { label: "PROD CLUSTERS", value: "14" },
+    { label: "PROD CLUSTERS", value: "20+" },
     { label: "CERTIFICATIONS", value: "CKA · TERRAFORM" },
     { label: "BASED IN", value: "AMMAN, JORDAN" },
   ],
@@ -139,7 +139,8 @@ export const PROJECTS: Project[] = [
 
 export const IMPACT = {
   stats: [
-    { label: "PROD CLUSTERS", value: "14" },
+    { label: "PROD CLUSTERS", value: "20+" },
+    { label: "UPTIME", value: "99.99%" },
     { label: "SERVICES AUTOMATED", value: "100+" },
     { label: "MIGRATION DOWNTIME", value: "0" },
     { label: "STATIC SECRETS", value: "0" },

@@ -21,7 +21,7 @@ test("constellation keeps running across navigation (iframe not recreated)", asy
       }),
     );
   });
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(4 * 900);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(5 * 900);
 
   const frameAfter = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   expect(frameAfter).toBeTruthy();
@@ -74,16 +74,19 @@ test("back/forward restores hash and scroll without errors", async ({ page }) =>
   await page.evaluate(() => window.scrollTo({ top: 1, behavior: "instant" }));
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   await frame!.evaluate(() => {
+    const refs = (window as any).__CF_HUB_HREFS as string[];
+    const pos = (window as any).__CF_HUB_POS as [number, number][];
+    const i = refs.indexOf("/impact");
     document.querySelector("canvas")!.dispatchEvent(
       new MouseEvent("click", {
         bubbles: true,
-        clientX: (window as any).__CF_HUB_POS[3][0],
-        clientY: (window as any).__CF_HUB_POS[3][1],
+        clientX: pos[i][0],
+        clientY: pos[i][1],
       }),
     );
   });
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(3 * 900);
-  await expect.poll(() => page.evaluate(() => new URL(location.href).hash)).toBe("#/metrics");
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(1 * 900);
+  await expect.poll(() => page.evaluate(() => new URL(location.href).hash)).toBe("#/impact");
   await page.goBack();
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0);
   expect(errors).toEqual([]);

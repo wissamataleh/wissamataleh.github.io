@@ -222,9 +222,6 @@ export default function ConstellationMenu() {
         >
           {SITE.handle}
         </a>
-        <span className="site-coords" aria-hidden="true">
-          {SITE.location}
-        </span>
         <nav className="site-nav" aria-label="primary">
           {NAV_SECTIONS.map((s) => (
             <a

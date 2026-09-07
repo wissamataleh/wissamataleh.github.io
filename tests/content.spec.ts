@@ -2,11 +2,11 @@ import { test, expect } from "@playwright/test";
 
 const SECTIONS = [
   { id: "home", marker: "Senior DevOps & Site Reliability Engineer" },
-  { id: "experience", marker: "02 / EXPERIENCE" },
-  { id: "platform", marker: "03 / PLATFORM" },
-  { id: "metrics", marker: "04 / IMPACT" },
-  { id: "contact", marker: "05 / CONTACT" },
-  { id: "projects", marker: "06 / PROJECTS" },
+  { id: "impact", marker: "02 / IMPACT" },
+  { id: "experience", marker: "03 / EXPERIENCE" },
+  { id: "platform", marker: "04 / PLATFORM" },
+  { id: "projects", marker: "05 / PROJECTS" },
+  { id: "contact", marker: "06 / CONTACT" },
 ];
 
 test("all six pages render as sections of the deck on the index route", async ({ page }) => {
@@ -34,7 +34,7 @@ test("clicking the projects hub scrolls the projects page into view", async ({ p
       }),
     );
   });
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(5 * 900);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(4 * 900);
   await expect(page.locator('[data-page="projects"]')).toBeVisible();
   expect(new URL(page.url()).pathname).toBe("/");
 });
@@ -49,26 +49,26 @@ test("wheel over the empty field area scrolls the deck", async ({ page }) => {
 test("a panel taller than the viewport scrolls internally without moving the deck", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 600 });
   await page.goto("/");
-  await page.evaluate(() => window.scrollTo({ top: 1 * window.innerHeight, behavior: "instant" }));
+  await page.evaluate(() => window.scrollTo({ top: 2 * window.innerHeight, behavior: "instant" }));
   await page.mouse.move(220, 300);
   await page.mouse.wheel(0, 240);
   const panel = page.locator('.deck-page[data-page="experience"] .content-panel');
   await expect
     .poll(async () => panel.evaluate((el) => (el as HTMLElement).scrollTop))
     .toBeGreaterThan(0);
-  expect(await page.evaluate(() => Math.round(window.scrollY / window.innerHeight))).toBe(1);
+  expect(await page.evaluate(() => Math.round(window.scrollY / window.innerHeight))).toBe(2);
 });
 
 test("scrolling updates the URL hash to the current page", async ({ page }) => {
   await page.goto("/");
-  await page.evaluate(() => window.scrollTo({ top: 4 * window.innerHeight, behavior: "instant" }));
+  await page.evaluate(() => window.scrollTo({ top: 5 * window.innerHeight, behavior: "instant" }));
   await expect.poll(() => page.evaluate(() => new URL(location.href).hash)).toBe("#/contact");
 });
 
 test("a deep link opens scrolled to that page", async ({ page }) => {
-  await page.goto("/#/metrics");
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(3 * 900);
-  await expect(page.locator('[data-page="metrics"]')).toBeVisible();
+  await page.goto("/#/impact");
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(1 * 900);
+  await expect(page.locator('[data-page="impact"]')).toBeVisible();
 });
 
 test("back/forward navigates between deck pages", async ({ page }) => {
@@ -87,7 +87,7 @@ test("back/forward navigates between deck pages", async ({ page }) => {
       }),
     );
   });
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(5 * 900);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(4 * 900);
   await page.goBack();
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0);
 });

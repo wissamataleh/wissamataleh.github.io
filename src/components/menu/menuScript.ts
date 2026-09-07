@@ -9,11 +9,11 @@ export type ConstellationMenuSection = {
 
 export const NAV_SECTIONS: ConstellationMenuSection[] = [
   { id: "home", label: "01 HOME", href: "/", x: 0.5, y: 0.34, anchor: "right" },
-  { id: "experience", label: "02 EXPERIENCE", href: "/experience", x: 0.55, y: 0.43, anchor: "left" },
-  { id: "platform", label: "03 PLATFORM", href: "/platform", x: 0.45, y: 0.5, anchor: "right" },
-  { id: "metrics", label: "04 METRICS", href: "/metrics", x: 0.55, y: 0.57, anchor: "left" },
-  { id: "contact", label: "05 CONTACT", href: "/contact", x: 0.47, y: 0.64, anchor: "right" },
-  { id: "projects", label: "06 PROJECTS", href: "/projects", x: 0.53, y: 0.71, anchor: "left" },
+  { id: "impact", label: "02 IMPACT", href: "/impact", x: 0.55, y: 0.41, anchor: "left" },
+  { id: "experience", label: "03 EXPERIENCE", href: "/experience", x: 0.45, y: 0.48, anchor: "right" },
+  { id: "platform", label: "04 PLATFORM", href: "/platform", x: 0.55, y: 0.55, anchor: "left" },
+  { id: "projects", label: "05 PROJECTS", href: "/projects", x: 0.47, y: 0.62, anchor: "right" },
+  { id: "contact", label: "06 CONTACT", href: "/contact", x: 0.53, y: 0.69, anchor: "left" },
 ];
 
 const RUNTIME = `(function (DATA) {

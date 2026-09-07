@@ -41,10 +41,10 @@ test("hub glyphs render and clicking a hub navigates without reload", async ({ p
   await page.mouse.move(exp.x, exp.y);
   await expect
     .poll(async () => frame!.evaluate(() => (window as any).__CF_HOVER ?? null))
-    .toBe(1);
+    .toBe(2);
 
   await page.mouse.click(exp.x, exp.y);
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(1 * 900);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(2 * 900);
   expect(errors).toEqual([]);
 });
 
@@ -55,19 +55,19 @@ test("hovering and clicking a nav label (text) triggers hover glow and navigates
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   expect(frame).toBeTruthy();
 
-  const labelRight = await frame!.evaluate(() => {
+  const labelLeft = await frame!.evaluate(() => {
     const idx = (window as any).__CF_HUB_HREFS.indexOf("/platform");
     const pos = (window as any).__CF_HUB_POS as [number, number][];
-    return { x: pos[idx][0] + 18, y: pos[idx][1] };
+    return { x: pos[idx][0] - 18, y: pos[idx][1] };
   });
 
-  await page.mouse.move(labelRight.x, labelRight.y);
+  await page.mouse.move(labelLeft.x, labelLeft.y);
   await expect
     .poll(async () => frame!.evaluate(() => (window as any).__CF_HOVER ?? null))
-    .toBe(2);
+    .toBe(3);
 
-  await page.mouse.click(labelRight.x, labelRight.y);
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(2 * 900);
+  await page.mouse.click(labelLeft.x, labelLeft.y);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(3 * 900);
 });
 
 test("dark/light toggle flips the field and persists across navigation", async ({ page }) => {
@@ -78,7 +78,7 @@ test("dark/light toggle flips the field and persists across navigation", async (
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   const contact = await hubPos(frame!, "/contact");
   await page.mouse.click(contact.x, contact.y);
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(4 * 900);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(5 * 900);
   await expect(page.locator("html")).toHaveAttribute("data-site-mode", "light");
 });
 
@@ -94,7 +94,7 @@ test("hub clicks work on a retina canvas (devicePixelRatio 2)", async ({ browser
 
   const exp = await hubPos(frame!, "/experience");
   await page.mouse.click(exp.x, exp.y);
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(1 * 900);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(2 * 900);
   await context.close();
 });
 
@@ -145,7 +145,7 @@ test("the hub for the current page is lit", async ({ page }) => {
   await page.goto("/#/projects");
   const frame = page.frames().find((f) => f.url().startsWith("about:srcdoc"));
   expect(frame).toBeTruthy();
-  await expect.poll(() => activeHubIndex(frame!)).toBe(5);
+  await expect.poll(() => activeHubIndex(frame!)).toBe(4);
 });
 
 test("the lit hub follows scrolling", async ({ page }) => {

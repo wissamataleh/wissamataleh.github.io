@@ -27,9 +27,29 @@ import {
     </article>
   </section>
 
+  <section class="deck-page" data-page="impact">
+    <section class="content-panel">
+      <p class="kicker">02 / IMPACT</p>
+      <div class="metric-grid">
+        {IMPACT.stats.map((cell) => (
+          <div class="metric-cell">
+            <span class="metric-label">{cell.label}</span>
+            <span class="metric-value">{cell.value}</span>
+          </div>
+        ))}
+      </div>
+      <div class="hairline" />
+      <ul class="role-points">
+        {IMPACT.points.map((point) => (
+          <li>{point}</li>
+        ))}
+      </ul>
+    </section>
+  </section>
+
   <section class="deck-page" data-page="experience">
     <section class="content-panel">
-      <p class="kicker">02 / EXPERIENCE</p>
+      <p class="kicker">03 / EXPERIENCE</p>
       {EXPERIENCE.map((role) => (
         <article class="role">
           <div class="role-head">
@@ -69,7 +89,7 @@ import {
 
   <section class="deck-page" data-page="platform">
     <section class="content-panel">
-      <p class="kicker">03 / PLATFORM &amp; SKILLS</p>
+      <p class="kicker">04 / PLATFORM &amp; SKILLS</p>
       {SKILLS.map((group) => (
         <div class="skill-group">
           <h2>{group.name}</h2>
@@ -83,43 +103,9 @@ import {
     </section>
   </section>
 
-  <section class="deck-page" data-page="metrics">
-    <section class="content-panel">
-      <p class="kicker">04 / IMPACT</p>
-      <div class="metric-grid">
-        {IMPACT.stats.map((cell) => (
-          <div class="metric-cell">
-            <span class="metric-label">{cell.label}</span>
-            <span class="metric-value">{cell.value}</span>
-          </div>
-        ))}
-      </div>
-      <div class="hairline" />
-      <ul class="role-points">
-        {IMPACT.points.map((point) => (
-          <li>{point}</li>
-        ))}
-      </ul>
-    </section>
-  </section>
-
-  <section class="deck-page" data-page="contact">
-    <section class="content-panel">
-      <p class="kicker">05 / CONTACT</p>
-      <p class="tagline">{CONTACT.availability}</p>
-      <dl class="contact-list">
-        <div><dt>EMAIL</dt><dd><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></dd></div>
-        <div><dt>LOCATION</dt><dd>{SITE.location}</dd></div>
-        <div><dt>GITHUB</dt><dd><a href={CONTACT.github} target="_blank" rel="noreferrer">{CONTACT.github}</a></dd></div>
-        <div><dt>LINKEDIN</dt><dd><a href={CONTACT.linkedin} target="_blank" rel="noreferrer">{CONTACT.linkedin}</a></dd></div>
-        <div><dt>CV</dt><dd><a href={CONTACT.cv} download rel="noreferrer">DOWNLOAD PDF — WISSAM ATALEH</a></dd></div>
-      </dl>
-    </section>
-  </section>
-
   <section class="deck-page" data-page="projects">
     <section class="content-panel">
-      <p class="kicker">06 / PROJECTS</p>
+      <p class="kicker">05 / PROJECTS</p>
       {PROJECTS.map((project) => (
         <article class="project">
           <div class="project-head">
@@ -130,6 +116,20 @@ import {
           <p class="project-stack">{project.stack.join(" / ")}</p>
         </article>
       ))}
+    </section>
+  </section>
+
+  <section class="deck-page" data-page="contact">
+    <section class="content-panel">
+      <p class="kicker">06 / CONTACT</p>
+      <p class="tagline">{CONTACT.availability}</p>
+      <dl class="contact-list">
+        <div><dt>EMAIL</dt><dd><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></dd></div>
+        <div><dt>LOCATION</dt><dd>{SITE.location}</dd></div>
+        <div><dt>GITHUB</dt><dd><a href={CONTACT.github} target="_blank" rel="noreferrer">{CONTACT.github}</a></dd></div>
+        <div><dt>LINKEDIN</dt><dd><a href={CONTACT.linkedin} target="_blank" rel="noreferrer">{CONTACT.linkedin}</a></dd></div>
+        <div><dt>CV</dt><dd><a href={CONTACT.cv} download rel="noreferrer">DOWNLOAD PDF — WISSAM ATALEH</a></dd></div>
+      </dl>
     </section>
   </section>
 </BaseLayout>

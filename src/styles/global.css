@@ -145,7 +145,7 @@ body {
   text-decoration: none;
   letter-spacing: 0.14em;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .site-name:hover {
@@ -192,9 +192,6 @@ body {
     -webkit-overflow-scrolling: touch;
   }
   .site-nav::-webkit-scrollbar {
-    display: none;
-  }
-  .site-coords {
     display: none;
   }
 }

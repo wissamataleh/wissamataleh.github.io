@@ -12,14 +12,14 @@ test("nav row is hidden on desktop, visible with links on mobile", async ({ page
 
   await navRow.locator('a[href="#/experience"]').click();
   expect(new URL(page.url()).pathname).toBe("/");
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(844);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(2 * 844);
   await expect.poll(() => page.evaluate(() => new URL(location.href).hash)).toBe("#/experience");
   await expect(page.locator("a.is-active[href='#/experience']")).toHaveCount(1);
 });
 
 test("brand link scrolls back to home from another page", async ({ page }) => {
   await page.goto("/#/platform");
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(2 * 900);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(3 * 900);
   await page.locator(".site-name").click();
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0);
   await expect(page.locator(".site-name")).toBeVisible();
