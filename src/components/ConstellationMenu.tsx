@@ -112,6 +112,7 @@ export default function ConstellationMenu() {
 
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
+      if (event.origin !== "null") return;
       const data = event.data as
         | { type?: string; href?: unknown; minX?: unknown }
         | null;
@@ -126,6 +127,7 @@ export default function ConstellationMenu() {
         return;
       }
       if (data.type !== "constellation-nav" || typeof data.href !== "string") return;
+      if (event.source !== frameWindow.current) return;
       goTo(data.href);
     };
     window.addEventListener("message", onMessage);

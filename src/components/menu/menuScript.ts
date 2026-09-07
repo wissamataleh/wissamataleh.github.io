@@ -45,6 +45,7 @@ const RUNTIME = `(function (DATA) {
 var hubs = [];
   var boundsMinX = Math.round(width * 0.42);
   window.addEventListener('message', function (e) {
+    if (e.source !== window.parent) return;
     if (e.data && e.data.type === 'constellation-bounds' && typeof e.data.minX === 'number') {
       boundsMinX = e.data.minX;
     } else if (e.data && e.data.type === 'constellation-route' && typeof e.data.href === 'string') {

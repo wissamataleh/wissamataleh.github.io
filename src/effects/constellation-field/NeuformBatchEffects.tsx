@@ -765,9 +765,13 @@ ${definition.focusCss ?? ""}
     });
   }
   window.addEventListener('message', function (event) {
+    if (event.source !== window.parent) return;
     if (!event.data || event.data.type !== 'threeui-controls') return;
     var next = event.data.controls || {};
-    Object.keys(next).forEach(function (key) { controls[key] = next[key]; });
+    var allowed = ['mode', 'speed', 'size', 'gap', 'length', 'density', 'strokeWidth', 'opacity'];
+    allowed.forEach(function (key) {
+      if (key in next) controls[key] = next[key];
+    });
     applyVisual();
   });
   window.__SF_APPLY_CONTROLS = applyVisual;

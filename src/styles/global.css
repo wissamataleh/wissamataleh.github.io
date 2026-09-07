@@ -1,6 +1,5 @@
 html,
-body,
-#app {
+body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -16,6 +15,12 @@ body {
   background: #070914;
   color: #eef1f6;
   font-family: "SF Mono", "Cascadia Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
 }
 
 #constellation-menu-root,
@@ -53,10 +58,11 @@ body {
   z-index: 20;
   height: 56px;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 20px;
   padding: 0 20px 0 24px;
   background: transparent;
+  color: var(--fg);
 }
 
 .site-controls {
@@ -115,10 +121,6 @@ body {
   opacity: 0.5;
 }
 
-.probe {
-  display: none;
-}
-
 :root[data-site-mode="dark"] {
   --bg: #070914;
   --fg: #eef1f6;
@@ -150,12 +152,6 @@ body {
   background: var(--bg);
   color: var(--fg);
   transition: background-color 380ms ease, color 380ms ease;
-}
-
-.site-bar {
-  align-items: baseline;
-  background: transparent;
-  color: var(--fg);
 }
 
 .site-nav {
@@ -226,16 +222,17 @@ body {
   background: var(--panel);
   border: 1px solid var(--divide);
   border-radius: 0;
+  margin: 88px 24px 24px;
+  max-width: 540px;
+  padding: 28px;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
 }
 
 .bio-panel {
   margin: 88px 24px 24px;
   padding: 32px;
   max-width: 540px;
-}
-
-.content-panel {
-  padding: 24px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -262,14 +259,6 @@ body {
   letter-spacing: 0.2em;
   color: var(--muted);
   margin: 0 0 18px;
-}
-
-.content-panel {
-  margin: 88px 24px 24px 24px;
-  max-width: 540px;
-  padding: 28px;
-  overflow-y: auto;
-  max-height: calc(100vh - 150px);
 }
 
 .content-panel h1 {
@@ -318,9 +307,14 @@ body {
   color: var(--muted);
 }
 
-.stat-strip dd,
-.metric-value {
+.stat-strip dd {
   font-size: 20px;
+  margin: 6px 0 0;
+  font-weight: 700;
+}
+
+.metric-value {
+  font-size: 26px;
   margin: 6px 0 0;
   font-weight: 700;
 }
@@ -423,10 +417,6 @@ body {
   gap: 8px;
 }
 
-.metric-value {
-  font-size: 26px;
-}
-
 .contact-list {
   display: grid;
   gap: 1px;
@@ -458,64 +448,8 @@ body {
   text-underline-offset: 4px;
 }
 
-.metric-cell-wide {
-  grid-column: span 2;
-}
-
 @media (max-width: 360px) {
   .metric-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.metric-hero {
-  font-size: 44px;
-  line-height: 1;
-}
-
-.metric-note {
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: var(--muted);
-}
-
-.burn-bar {
-  height: 8px;
-  background: var(--divide);
-  border: 1px solid var(--divide);
-  position: relative;
-}
-
-.burn-fill {
-  height: 100%;
-  width: var(--burn, 0%);
-  background: var(--fg);
-}
-
-.led {
-  width: 10px;
-  height: 10px;
-  border: 1px solid currentColor;
-  background: currentColor;
-  animation: led-pulse 2s ease-in-out infinite;
-}
-
-@keyframes led-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.25; }
-}
-
-.sparkline {
-  width: 100%;
-  height: auto;
-  display: block;
-  color: var(--fg);
-  border-top: 1px solid var(--divide);
-  margin-top: 10px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .led {
-    animation: none;
   }
 }
