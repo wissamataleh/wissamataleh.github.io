@@ -1,12 +1,20 @@
 export const SITE = {
-  role: "Senior DevOps/SRE Engineer",
-  handle: "SR0.OPERATOR",
-  email: "sr0.operator@example.com",
-  github: "https://github.com/sr0-operator",
-  linkedin: "https://www.linkedin.com/in/sr0-operator",
-  location: "47.3769N 08.5417E",
+  name: "Wissam Ataleh",
+  handle: "WISSAM ATALEH",
+  role: "Senior DevOps & Site Reliability Engineer",
+  email: "wissam_ataleh@outlook.com",
+  phone: "+962 79 549 9608",
+  github: "https://github.com/wissamataleh",
+  linkedin: "https://www.linkedin.com/in/wissamataleh",
+  location: "Amman, Jordan",
   tagline:
-    "Turns unmanaged chaos into enforceable SLOs. Builds platforms that fail gracefully and wake nobody.",
+    "8+ years architecting, automating, and scaling production-grade Kubernetes infrastructure across AWS, Azure, public cloud, and enterprise on-premises. CKA & Terraform-certified. Deep in GPU-enabled AI/ML platform engineering, zero-trust security, and high-throughput telemetry across hybrid architectures.",
+  stats: [
+    { label: "EXPERIENCE", value: "8+ YRS" },
+    { label: "PROD CLUSTERS", value: "14" },
+    { label: "CERTIFICATIONS", value: "CKA · TERRAFORM" },
+    { label: "BASED IN", value: "AMMAN, JORDAN" },
+  ],
 };
 
 export type Role = {
@@ -19,49 +27,62 @@ export type Role = {
 
 export const EXPERIENCE: Role[] = [
   {
-    title: "Senior Site Reliability Engineer",
-    company: "Northbridge Systems",
-    period: "2022 — PRESENT",
-    stack: ["Kubernetes", "Terraform", "Prometheus", "Go", "AWS"],
+    title: "Senior Site Reliability Engineer II",
+    company: "Careem",
+    period: "Sep 2024 — May 2026 · Amman, Jordan",
+    stack: ["Go", "Kubernetes", "Terraform", "ArgoCD", "GitHub Actions", "AWS EKS"],
     points: [
-      "Owns the error budget for a 12-region platform processing 14k req/s; SLO 99.95% met 9 consecutive quarters.",
-      "Cut median page-build time 41% by replacing ad-hoc Jenkins pipelines with Argo Workflows on CI runners.",
-      "Wrote the on-call runbook and rotated primary incident commander for 28 months, MTTA down 3.4x.",
+      "Architected and deployed the \"Placement Operator\", a custom Go Kubernetes controller automating pod placement and PDB-aware workload rotation across 14 clusters and hundreds of services — with zero downtime.",
+      "Optimized multi-cluster AWS environments using Terraform (IaC) to lower compute costs while keeping Rides, Food, and Pay verticals highly available.",
+      "Defined SLI/SLO metrics, led critical incident management, and established post-mortem processes that significantly reduced MTTR.",
+      "Standardized multi-cluster deployments using GitHub Actions and ArgoCD, shifting deploys to a self-service model for engineering teams.",
+    ],
+  },
+  {
+    title: "Senior DevOps Engineer",
+    company: "BeyondAI (Beyond Limits)",
+    period: "Oct 2021 — Sep 2024 · Glendale, CA / Remote",
+    stack: ["Kubernetes", "NVIDIA GPU", "Terraform", "HashiCorp Vault", "Prometheus", "Kubeflow"],
+    points: [
+      "Provisioned and administrated production Kubernetes clusters across private on-premises and hybrid clouds, including NVIDIA GPU nodes for deep-learning training and real-time inference.",
+      "Spearheaded MLOps infrastructure with Kubeflow, MLflow, and KServe to build scalable model-serving platforms and automated feature stores.",
+      "Launched hardware-isolated confidential-compute environments using Intel SGX, Gramine, and Kubernetes; enforced RBAC, network policy segmentation, and Vault secrets.",
+      "Implemented end-to-end observability with Prometheus, Grafana, and Loki plus custom alerting.",
     ],
   },
   {
     title: "DevOps Engineer",
-    company: "Relayforge Labs",
-    period: "2019 — 2022",
-    stack: ["Docker", "Consul", "Grafana", "GitHub Actions", "Vault"],
+    company: "Jordan Open Source Association",
+    period: "Sep 2019 — Oct 2021 · Amman, Jordan",
+    stack: ["Kubernetes", "DigitalOcean", "Keycloak", "ArgoCD", "Mailu", "Nuxt.js", "Strapi"],
     points: [
-      "Designed the golden-path platform: one CLI, one API, repeatable infra for 40+ microservices.",
-      "Introduced policy-as-code (OPA) gates; reduced prod misconfig incidents to near zero.",
-      "Moved secrets out of env files into Vault with agent-side injection and audit trails.",
+      "Designed and deployed a self-managed, high-availability Kubernetes cloud hosting internal tools, mail servers, SSO identity, and CI/CD platforms.",
+      "Led cross-functional developer teams to build and launch core digital platforms, including the organization's main web application and digital safety portals.",
     ],
   },
-  {
-    title: "Platform Engineer",
-    company: "Cinder & Coal (acq. 2019)",
-    period: "2017 — 2019",
-    stack: ["AWS", "Ansible", "Python", "Postgres", "ELK"],
-    points: [
-      "Provisioned and hardened a SOC2-aligned network from empty account to green audit in 11 months.",
-      "Built the first real staging environment; yeeted 80% of 'works on my machine' bugs.",
-      "Automated database backup/restore drills including quarterly tape-to-object restore tests.",
-    ],
-  },
+];
+
+export const CERTIFICATIONS = [
+  { name: "HashiCorp Certified: Terraform Associate", issuer: "IBM Professional Certification", year: "2026" },
+  { name: "CKA: Certified Kubernetes Administrator", issuer: "The Linux Foundation", year: "2024" },
+];
+
+export const EDUCATION = [
+  { degree: "Master of Science in Computer Engineering", school: "German Jordanian University", period: "2017 – 2019", location: "Amman, Jordan" },
+  { degree: "Bachelor of Science in Mechatronics Engineering", school: "Al-Balqa Applied University", period: "2008 – 2013", location: "Amman, Jordan" },
 ];
 
 export type SkillGroup = { name: string; tags: string[] };
 
 export const SKILLS: SkillGroup[] = [
-  { name: "ORCHESTRATION", tags: ["Kubernetes", "Helm", "Kustomize", "OpenShift", "Nomad", "AWS ECS"] },
-  { name: "INFRASTRUCTURE", tags: ["Terraform", "OpenTofu", "Pulumi", "Ansible", "CloudFormation"] },
-  { name: "OBSERVABILITY", tags: ["Prometheus", "Grafana", "OpenTelemetry", "Loki", "Sentry", "Datadog"] },
-  { name: "CI/CD", tags: ["GitHub Actions", "Argo CD", "Argo Workflows", "Tekton", "CircleCI", "Jenkins"] },
-  { name: "CLOUD", tags: ["AWS", "GCP", "Azure", "VPC", "IAM", "Cost Allocation"] },
-  { name: "PRACTICES", tags: ["SLOs", "Error Budgets", "On-Call", "Chaos Engineering", "Blameless RCAs", "Runbooks"] },
+  { name: "CLOUD & ON-PREMISE", tags: ["AWS EKS", "Azure AKS", "Bare-Metal K8s", "Rancher", "DigitalOcean"] },
+  { name: "INFRASTRUCTURE AS CODE", tags: ["Terraform", "Ansible", "Helm", "Kustomize"] },
+  { name: "OBSERVABILITY & TELEMETRY", tags: ["Prometheus", "Grafana", "OpenTelemetry", "Loki", "ELK Stack", "Dynatrace"] },
+  { name: "SECURITY & GOVERNANCE", tags: ["HashiCorp Vault", "Keycloak", "RBAC", "Trivy", "SonarQube", "Kyverno", "Network Policies", "SOC 2"] },
+  { name: "CI/CD & GITOPS", tags: ["GitHub Actions", "GitLab CI", "Jenkins", "ArgoCD", "FluxCD"] },
+  { name: "DEVELOPMENT & SCRIPTING", tags: ["Go", "Python", "Bash", "JavaScript"] },
+  { name: "AUTO-SCALING & MLOPS", tags: ["KEDA", "Kubeflow", "MLflow", "KServe"] },
+  { name: "AI TOOLING & METHODOLOGIES", tags: ["Applied AI Integration", "LLMs", "LM Studio", "Ollama", "SLO/SLI", "Incident Management", "Cost Optimization"] },
 ];
 
 export type Project = {
@@ -73,46 +94,70 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    name: "quantum-scaler",
-    summary: "Kubernetes HPA refinement that turns p99 latency + SLO burn into scale decisions; validated in staging for 5 weeks without a single pod churn spike.",
-    stack: ["Go", "Kubernetes", "Prometheus", "Vertical Pod Autoscaler"],
-    status: "IN PROD — 2 CLUSTERS",
+    name: "Placement Operator",
+    summary: "Production-grade Go Kubernetes controller automating declarative pod placement, node-pool consolidation, and PDB-aware workload rotation across 14 production EKS clusters. Enables blue/green bulk migrations and graceful node draining with zero downtime.",
+    stack: ["Go", "controller-runtime", "Kubernetes", "AWS EKS"],
+    status: "IN PROD — CAREEM",
   },
   {
-    name: "chaos-forge",
-    summary: "Scheduled chaos drill toolkit: kills a random pod/replica every Tuesday at 03:00 UTC and pages only the responsible on-call engineer.",
-    stack: ["Litmus", "Argo Workflows", "SLACK webhooks", "Terraform"],
-    status: "RUNNING — 9 MONTHS",
+    name: "HashiCorp Vault Secrets Platform",
+    summary: "Highly-available Vault across 3 AWS availability zones using DynamoDB/S3 backends and AWS KMS auto-unsealing, with AD SAML + Kubernetes Service Account auth. Eliminated static secrets and established full auditability across prod and non-prod.",
+    stack: ["HashiCorp Vault", "Terraform", "AWS KMS", "SAML", "Kubernetes"],
+    status: "BEYONDAI",
   },
   {
-    name: "budget-burn",
-    summary: "Error budget dashboard with predicted burn-to-expiry and auto-generated incident candidates before the pager decides for you.",
-    stack: ["Prometheus Rules", "Go", "Grafana", "S3"],
-    status: "INTERNAL TOOL",
+    name: "Multi-Environment GitOps (ArgoCD)",
+    summary: "Replaced hardcoded Jenkins deployment scripts with declarative ArgoCD pipelines across Dev, QA, UAT, and Prod. Automated sync, diff tracking, single-click rollbacks, and eliminated configuration drift.",
+    stack: ["ArgoCD", "GitOps", "Kubernetes", "Git"],
+    status: "BEYONDAI",
   },
   {
-    name: "infra-monorepo",
-    summary: "One repo, one plan: 100% of Terraform modules, DRY policies, and drift detection in a single review flow.",
-    stack: ["OpenTofu", "OPA", "Atlantis", "GitHub Actions"],
-    status: "1.2K COMMITS / 4 REGIONS",
+    name: "MLOps Platform on EKS",
+    summary: "Cloud-native platform for data scientists to build, train, and deploy models at scale, integrating Kubeflow and MLflow with standardized CI/CD for experimentation and automated artifact tracking.",
+    stack: ["AWS EKS", "Kubeflow", "MLflow", "KServe"],
+    status: "BEYONDAI",
+  },
+  {
+    name: "Confidential Compute (Intel SGX)",
+    summary: "Encrypted memory enclaves using Intel SGX chipsets, Gramine, and Kubernetes across Azure and private on-premises, enabling secure processing of AI algorithms, sensitive client data, and PII.",
+    stack: ["Intel SGX", "Gramine", "Kubernetes", "Azure"],
+    status: "BEYONDAI",
+  },
+  {
+    name: "JOSA Cloud Initiative",
+    summary: "Self-managed, open-source DigitalOcean Kubernetes cloud hosting Keycloak SSO, Mailu mail, Nextcloud, Jitsi, Monica CRM, and security tools — all delivered via ArgoCD and CircleCI.",
+    stack: ["Kubernetes", "DigitalOcean", "Keycloak", "ArgoCD", "CircleCI"],
+    status: "JOSA",
+  },
+  {
+    name: "josa.ngo Web Platform",
+    summary: "High-performance, secure digital platform built on Nuxt.js 3 (SSG/SSR) and a Strapi headless CMS, running in Docker on Kubernetes with zero-downtime automated delivery.",
+    stack: ["Nuxt.js 3", "Strapi", "Docker", "Kubernetes"],
+    status: "JOSA",
   },
 ];
 
-export const METRICS = {
-  slo: "99.95",
-  window: "30 DAY ROLLING",
-  uptimeNow: "99.982",
-  p99: "128ms",
-  p95: "74ms",
-  reqRate: "14.2k /s",
-  errorBudgetRemaining: "0.041",
-  burnUnit: "% / 30d",
-  series: [28, 30, 27, 31, 29, 33, 30, 28, 31, 34, 30, 29, 32, 36, 31, 30, 33, 29, 28, 30, 31, 30, 32, 34, 30, 29, 31, 33, 30, 32],
+export const IMPACT = {
+  stats: [
+    { label: "PROD CLUSTERS", value: "14" },
+    { label: "SERVICES AUTOMATED", value: "100+" },
+    { label: "MIGRATION DOWNTIME", value: "0" },
+    { label: "STATIC SECRETS", value: "0" },
+  ],
+  points: [
+    "Placement operator pushes pod placement into a Go controller — PDB-aware rotation across 14 EKS clusters and hundreds of services, zero downtime.",
+    "Zero-downtime cluster upgrades and single-click rollbacks after replacing Jenkins pipelines with ArgoCD GitOps.",
+    "Consolidated fragmented node pools to cut compute cost and resource waste while improving SLIs for resource-intensive workloads.",
+    "Fully auditable Vault platform removed static secrets from prod and non-prod, meeting strict compliance requirements for global clients.",
+  ],
 };
 
 export const CONTACT = {
-  email: "sr0.operator@example.com",
-  github: "https://github.com/sr0-operator",
-  linkedin: "https://www.linkedin.com/in/sr0-operator",
-  availability: "OPEN TO PLATFORM-LEAD & PRINCIPAL SRE ROLES — REMOTE OK",
+  email: "wissam_ataleh@outlook.com",
+  phone: "+962 79 549 9608",
+  github: "https://github.com/wissamataleh",
+  linkedin: "https://www.linkedin.com/in/wissamataleh",
+  cv: "/WISSAM-ATALEH-DEVOPS-SRE-CV.pdf",
+  availability:
+    "OPEN TO SENIOR SRE / DEVOPS / PLATFORM-LEAD ROLES — AMMAN-BASED, REMOTE OK",
 };

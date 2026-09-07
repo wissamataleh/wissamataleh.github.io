@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ConstellationField } from "../effects/constellation-field/ConstellationField";
 import { buildMenuScript, NAV_SECTIONS } from "./menu/menuScript";
+import { SITE } from "../data/site";
 import "../effects/constellation-field/styles.css";
 
 type Mode = "dark" | "light";
@@ -219,10 +220,10 @@ export default function ConstellationMenu() {
             goTo("/");
           }}
         >
-          SR0.OPERATOR
+          {SITE.handle}
         </a>
         <span className="site-coords" aria-hidden="true">
-          47.3769N 08.5417E
+          {SITE.location}
         </span>
         <nav className="site-nav" aria-label="primary">
           {NAV_SECTIONS.map((s) => (

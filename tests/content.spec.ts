@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
 const SECTIONS = [
-  { id: "home", marker: "Senior DevOps/SRE Engineer" },
+  { id: "home", marker: "Senior DevOps & Site Reliability Engineer" },
   { id: "experience", marker: "02 / EXPERIENCE" },
   { id: "platform", marker: "03 / PLATFORM" },
-  { id: "metrics", marker: "04 / METRICS" },
+  { id: "metrics", marker: "04 / IMPACT" },
   { id: "contact", marker: "05 / CONTACT" },
   { id: "projects", marker: "06 / PROJECTS" },
 ];
@@ -90,5 +90,15 @@ test("back/forward navigates between deck pages", async ({ page }) => {
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(5 * 900);
   await page.goBack();
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(0);
+});
+
+test("contact page links to the CV PDF and it is served", async ({ page }) => {
+  await page.goto("/#/contact");
+  const link = page.locator('a[href="/WISSAM-ATALEH-DEVOPS-SRE-CV.pdf"]');
+  await expect(link).toBeVisible();
+  await expect(link).toHaveAttribute("download", "");
+  const res = await page.request.get("/WISSAM-ATALEH-DEVOPS-SRE-CV.pdf");
+  expect(res.status()).toBe(200);
+  expect((await res.body()).length).toBeGreaterThan(1000);
 });
 

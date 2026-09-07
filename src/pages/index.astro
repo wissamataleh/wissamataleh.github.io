@@ -1,20 +1,27 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE, EXPERIENCE, SKILLS, PROJECTS, METRICS, CONTACT } from "../data/site";
-const seriesJson = JSON.stringify(METRICS.series);
+import {
+  SITE,
+  EXPERIENCE,
+  CERTIFICATIONS,
+  EDUCATION,
+  SKILLS,
+  PROJECTS,
+  IMPACT,
+  CONTACT,
+} from "../data/site";
 ---
 <BaseLayout title={`${SITE.handle} — ${SITE.role}`}>
   <section class="deck-page" data-page="home">
     <article class="content-panel">
-      <p class="kicker">SR0.OPERATOR // SUISSE</p>
+      <p class="kicker">SRE // AMMAN, JORDAN</p>
       <h1>{SITE.role}</h1>
       <p class="tagline">{SITE.tagline}</p>
       <div class="hairline" />
       <dl class="stat-strip">
-        <div><dt>ON-CALL</dt><dd>24 / 7 / 365</dd></div>
-        <div><dt>INCIDENTS/CD</dt><dd>2.1</dd></div>
-        <div><dt>SLO</dt><dd>99.95%</dd></div>
-        <div><dt>MTTA</dt><dd>9m 40s</dd></div>
+        {SITE.stats.map((stat) => (
+          <div><dt>{stat.label}</dt><dd>{stat.value}</dd></div>
+        ))}
       </dl>
       <p class="hint">SCROLL TO NAVIGATE — OR AIM &amp; CLICK A NODE.</p>
     </article>
@@ -37,6 +44,26 @@ const seriesJson = JSON.stringify(METRICS.series);
           </ul>
         </article>
       ))}
+      <article class="role">
+        <div class="role-head">
+          <h2>Certifications</h2>
+          <ul class="role-points">
+            {CERTIFICATIONS.map((cert) => (
+              <li>{cert.name} — <span class="role-meta">{cert.issuer}, {cert.year}</span></li>
+            ))}
+          </ul>
+        </div>
+      </article>
+      <article class="role">
+        <div class="role-head">
+          <h2>Education</h2>
+          <ul class="role-points">
+            {EDUCATION.map((edu) => (
+              <li>{edu.degree} — <span class="role-meta">{edu.school}, {edu.period}</span></li>
+            ))}
+          </ul>
+        </div>
+      </article>
     </section>
   </section>
 
@@ -58,37 +85,21 @@ const seriesJson = JSON.stringify(METRICS.series);
 
   <section class="deck-page" data-page="metrics">
     <section class="content-panel">
-      <p class="kicker">04 / METRICS — LIVE FEED SNAPSHOT</p>
+      <p class="kicker">04 / IMPACT</p>
       <div class="metric-grid">
-        <div class="metric-cell metric-cell-wide">
-          <span class="metric-label">SLO (30 DAYS)</span>
-          <span class="metric-value metric-hero">{METRICS.slo}%</span>
-          <div class="burn-bar" style={`--burn: ${METRICS.errorBudgetRemaining}%`}>
-            <div class="burn-fill" />
+        {IMPACT.stats.map((cell) => (
+          <div class="metric-cell">
+            <span class="metric-label">{cell.label}</span>
+            <span class="metric-value">{cell.value}</span>
           </div>
-          <span class="metric-note">ERROR BUDGET USED {METRICS.errorBudgetRemaining}%</span>
-        </div>
-        <div class="metric-cell">
-          <span class="metric-label">UPTIME NOW</span>
-          <span class="metric-value">{METRICS.uptimeNow}%</span>
-          <span class="led" aria-hidden="true" />
-        </div>
-        <div class="metric-cell">
-          <span class="metric-label">P99 / P95</span>
-          <span class="metric-value">{METRICS.p99}</span>
-          <span class="metric-note">P95 {METRICS.p95}</span>
-        </div>
-        <div class="metric-cell">
-          <span class="metric-label">REQUEST RATE</span>
-          <span class="metric-value">{METRICS.reqRate}</span>
-        </div>
+        ))}
       </div>
-      <div class="metric-grid">
-        <div class="metric-cell metric-cell-wide">
-          <span class="metric-label">REQ/S — 30 DAY TRAIL</span>
-          <canvas class="sparkline" width="360" height="96" data-series={seriesJson} />
-        </div>
-      </div>
+      <div class="hairline" />
+      <ul class="role-points">
+        {IMPACT.points.map((point) => (
+          <li>{point}</li>
+        ))}
+      </ul>
     </section>
   </section>
 
@@ -98,8 +109,10 @@ const seriesJson = JSON.stringify(METRICS.series);
       <p class="tagline">{CONTACT.availability}</p>
       <dl class="contact-list">
         <div><dt>EMAIL</dt><dd><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></dd></div>
+        <div><dt>LOCATION</dt><dd>{SITE.location}</dd></div>
         <div><dt>GITHUB</dt><dd><a href={CONTACT.github} target="_blank" rel="noreferrer">{CONTACT.github}</a></dd></div>
         <div><dt>LINKEDIN</dt><dd><a href={CONTACT.linkedin} target="_blank" rel="noreferrer">{CONTACT.linkedin}</a></dd></div>
+        <div><dt>CV</dt><dd><a href={CONTACT.cv} download rel="noreferrer">DOWNLOAD PDF — WISSAM ATALEH</a></dd></div>
       </dl>
     </section>
   </section>
@@ -120,28 +133,3 @@ const seriesJson = JSON.stringify(METRICS.series);
     </section>
   </section>
 </BaseLayout>
-
-<script>
-  const canvas = document.querySelector<HTMLCanvasElement>("canvas.sparkline");
-  if (canvas) {
-    const series = JSON.parse(canvas.dataset.series || "[]") as number[];
-    const rect = (n: number) => canvas.height - (n / 40) * canvas.height;
-    const ctx = canvas.getContext("2d")!;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "currentColor";
-    ctx.fillStyle = "currentColor";
-    ctx.globalAlpha = 0.85;
-    ctx.beginPath();
-    series.forEach((n, i) => {
-      const x = (i / (series.length - 1)) * canvas.width;
-      if (i === 0) ctx.moveTo(x, rect(n));
-      else ctx.lineTo(x, rect(n));
-    });
-    ctx.stroke();
-    ctx.globalAlpha = 0.35;
-    series.forEach((n, i) => {
-      const x = (i / (series.length - 1)) * canvas.width;
-      ctx.fillRect(x - 1, rect(n) - 1, 2, 2);
-    });
-  }
-</script>
