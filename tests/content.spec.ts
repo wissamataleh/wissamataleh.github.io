@@ -94,7 +94,7 @@ test("back/forward navigates between deck pages", async ({ page }) => {
 
 test("contact page links to the CV PDF and it is served", async ({ page }) => {
   await page.goto("/#/contact");
-  const link = page.locator('a[href="/WISSAM-ATALEH-DEVOPS-SRE-CV.pdf"]');
+  const link = page.locator('[data-page="contact"] a[href="/WISSAM-ATALEH-DEVOPS-SRE-CV.pdf"]');
   await expect(link).toBeVisible();
   await expect(link).toHaveAttribute("download", "");
   const res = await page.request.get("/WISSAM-ATALEH-DEVOPS-SRE-CV.pdf");

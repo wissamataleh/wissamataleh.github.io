@@ -68,26 +68,49 @@ body {
 }
 
 .site-toggle,
-.site-github {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
+.site-github,
+.site-linkedin,
+.site-cv {
   background: transparent;
   border: none;
-  border-radius: 50%;
   color: var(--muted);
-  padding: 0;
   cursor: pointer;
   transition: color 380ms ease, box-shadow 380ms ease, background 380ms ease;
 }
 
-.site-github {
+.site-toggle,
+.site-github,
+.site-linkedin {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.site-cv {
+  height: 44px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--divide);
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.site-github,
+.site-linkedin,
+.site-cv {
   text-decoration: none;
 }
 
 .site-toggle:hover,
-.site-github:hover {
+.site-github:hover,
+.site-linkedin:hover,
+.site-cv:hover {
   color: var(--glow);
   background: radial-gradient(
     circle,
@@ -235,7 +258,9 @@ body {
     transition: none;
   }
   .site-toggle,
-  .site-github {
+  .site-github,
+  .site-linkedin,
+  .site-cv {
     transition: none;
   }
   html {
