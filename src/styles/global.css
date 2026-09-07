@@ -59,9 +59,16 @@ body {
   background: transparent;
 }
 
-.site-toggle {
+.site-controls {
   flex: none;
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.site-toggle,
+.site-github {
   width: 44px;
   height: 44px;
   display: grid;
@@ -75,7 +82,12 @@ body {
   transition: color 380ms ease, box-shadow 380ms ease, background 380ms ease;
 }
 
-.site-toggle:hover {
+.site-github {
+  text-decoration: none;
+}
+
+.site-toggle:hover,
+.site-github:hover {
   color: var(--glow);
   background: radial-gradient(
     circle,
@@ -222,7 +234,8 @@ body {
   .site-bar {
     transition: none;
   }
-  .site-toggle {
+  .site-toggle,
+  .site-github {
     transition: none;
   }
   html {
