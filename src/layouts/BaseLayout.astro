@@ -1,12 +1,21 @@
 ---
 import "../styles/global.css";
 import ConstellationMenu from "../components/ConstellationMenu";
+import { SITE } from "../data/site";
 
 interface Props {
   title?: string;
+  robots?: string;
 }
 
-const { title = "Senior DevOps & Site Reliability Engineer — Wissam Ataleh" } = Astro.props;
+const siteUrl = "https://wissamataleh.github.io";
+const {
+  title = `${SITE.role} — ${SITE.name}`,
+  robots = "index, follow",
+} = Astro.props;
+const pageTitle = title;
+const ogImage = `${siteUrl}/og-image.png`;
+const pageDescription = `${SITE.role} — ${SITE.tagline.slice(0, 155)}`;
 ---
 <!doctype html>
 <html lang="en" data-site-mode="dark">
@@ -14,9 +23,44 @@ const { title = "Senior DevOps & Site Reliability Engineer — Wissam Ataleh" } 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark light" />
-    <meta name="description" content="Senior DevOps & Site Reliability Engineer — portfolio" />
+    <meta name="description" content={pageDescription} />
+    <meta name="author" content={SITE.name} />
+    <meta name="robots" content={robots} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
+    <link rel="canonical" href={siteUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.handle} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={`Glowing constellation node — ${SITE.name}, ${SITE.role}`} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={`Glowing constellation node — ${SITE.name}, ${SITE.role}`} />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: SITE.name,
+        jobTitle: SITE.role,
+        email: SITE.email,
+        telephone: SITE.phone,
+        url: siteUrl,
+        image: ogImage,
+        sameAs: [SITE.github, SITE.linkedin],
+        address: { "@type": "PostalAddress", addressLocality: SITE.location },
+      })}
+    />
+
+    <title>{pageTitle}</title>
   </head>
   <body>
     <ConstellationMenu client:load />

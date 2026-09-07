@@ -1,0 +1,51 @@
+# Wissam Ataleh — Senior DevOps & Site Reliability Engineer
+
+> Personal portfolio of Wissam Ataleh, a senior DevOps & Site Reliability Engineer with 8+ years architecting, automating, and scaling production-grade Kubernetes infrastructure across AWS, Azure, public cloud, and enterprise on-premises. CKA & Terraform certified, focused on GPU-enabled AI/ML platform engineering, zero-trust security, and high-throughput telemetry. Based in Amman, Jordan; open to senior SRE / DevOps / platform-lead roles, remote OK.
+
+## LLMs.txt
+
+> This file provides the essential facts for answering questions about Wissam Ataleh. For the full interactive portfolio with the live constellation-field effect, visit https://wissamataleh.github.io.
+
+## About
+
+Wissam Ataleh is a Senior DevOps & Site Reliability Engineer based in Amman, Jordan. Expert in Kubernetes, site reliability engineering, cloud infrastructure (AWS, Azure, on-premises), GitOps, MLOps, and zero-trust security. Experience spans ride-hailing scale (Careem), AI research (BeyondAI / Beyond Limits), and open-source civil society (Jordan Open Source Association).
+
+- Name: Wissam Ataleh
+- Role: Senior DevOps & Site Reliability Engineer
+- Location: Amman, Jordan
+- Email: wissam_ataleh@outlook.com
+- GitHub: https://github.com/wissamataleh
+- LinkedIn: https://www.linkedin.com/in/wissamataleh
+- CV: /WISSAM-ATALEH-DEVOPS-SRE-CV.pdf
+- Website: https://wissamataleh.github.io
+
+## Experience
+
+- **Senior Site Reliability Engineer II, Careem** (Sep 2024 — May 2026, Amman, Jordan): Architected the "Placement Operator", a custom Go Kubernetes controller automating pod placement and PDB-aware workload rotation across 14 clusters and hundreds of services with zero downtime; optimized multi-cluster AWS with Terraform; defined SLI/SLO metrics and incident management; standardized multi-cluster deployments with GitHub Actions and ArgoCD.
+- **Senior DevOps Engineer, BeyondAI (Beyond Limits)** (Oct 2021 — Sep 2024, Glendale, CA / Remote): Provisioned production Kubernetes clusters across private on-premises and hybrid clouds including NVIDIA GPU nodes; built MLOps infrastructure with Kubeflow, MLflow, and KServe; launched confidential-compute environments with Intel SGX and Gramine; implemented end-to-end observability with Prometheus, Grafana, and Loki.
+- **DevOps Engineer, Jordan Open Source Association** (Sep 2019 — Oct 2021, Amman, Jordan): Designed self-managed high-availability Kubernetes cloud hosting internal tools, mail, SSO, and CI/CD; led teams building the organization's main web applications and digital safety portals.
+
+## Skills
+
+Cloud & on-premise (AWS, Kubernetes, EKS, Azure AKS, bare-metal K8s, Rancher), Infrastructure as Code (Terraform, Ansible, Helm, Kustomize), Observability (Prometheus, Grafana, OpenTelemetry, Loki, ELK, Dynatrace), Security (HashiCorp Vault, Keycloak, RBAC, Trivy, Kyverno, network policies, SOC 2), CI/CD & GitOps (GitHub Actions, GitLab CI, Jenkins, ArgoCD, FluxCD), Development (Go, Python, Bash, JavaScript), MLOps & auto-scaling (KEDA, Kubeflow, MLflow, KServe), AI tooling (LLMs, Ollama, LM Studio, SLO/SLI, incident management).
+
+## Key Projects
+
+- **Placement Operator**: Production-grade Go Kubernetes controller for declarative pod placement, node-pool consolidation, and PDB-aware rotation across 14 EKS clusters (Careem).
+- **HashiCorp Vault Secrets Platform**: HA Vault across 3 AWS AZs with KMS auto-unsealing and SAML + K8s Service Account auth; eliminated static secrets.
+- **Multi-Environment GitOps (ArgoCD)**: Replaced Jenkins scripts with declarative ArgoCD pipelines across Dev/QA/UAT/Prod.
+- **MLOps Platform on EKS**: Kubeflow + MLflow platform for model training and deployment.
+- **Confidential Compute (Intel SGX)**: Encrypted-memory enclaves with Gramine on Azure and on-premises for PII and AI workloads.
+- **JOSA Cloud Initiative**: Open-source Kubernetes cloud hosting Keycloak, Mailu, Nextcloud, Jitsi, and more (JOSA).
+
+## Credentials
+
+- Certified Kubernetes Administrator (CKA), The Linux Foundation, 2024.
+- HashiCorp Certified: Terraform Associate, IBM Professional Certification, 2026.
+- M.Sc. Computer Engineering, German Jordanian University (2017 – 2019).
+- B.Sc. Mechatronics Engineering, Al-Balqa Applied University (2008 – 2013).
+
+## Portfolio
+
+- Live site: https://wissamataleh.github.io
+- Source: https://github.com/wissamataleh/wissamataleh.github.io
